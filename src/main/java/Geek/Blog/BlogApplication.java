@@ -8,7 +8,7 @@ public class BlogApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlogApplication.class, args);
-		System.out.println("Hi this is 6th try");
+		System.out.println("Hi this is 7th try");
 	}
 
 }
