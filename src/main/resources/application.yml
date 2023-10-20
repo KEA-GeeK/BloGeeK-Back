@@ -18,13 +18,21 @@ spring:
     username: root
     password: qwer1234!
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
   jpa:
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     properties:
       hibernate:
         format_sql: true
         show-sql: true
 
+logging:
+  level:
+    org:
+      springframework:
+        web=DEBUG:
