@@ -23,7 +23,7 @@ public class FollowController {
     public Follow follower(@RequestBody Follow follow) {
        //사용자의 요청이 유효한지 아닌지 검증\
         // 예) 토큰
-    //try
+    //try - catch
 
         //log.info(Follower_id);
        return follow;
