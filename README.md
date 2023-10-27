@@ -1,3 +1,8 @@
+> [!WARNING]  
+> Action/Workflow 설정 전까지 업로드 하면 안됩니다!!! 
+
+<br>
+
 # BloGeek-Back
 
 <div align="center">
