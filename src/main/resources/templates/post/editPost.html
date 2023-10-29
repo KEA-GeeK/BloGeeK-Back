@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시물 수정</title>
+</head>
+<body>
+<h1>게시물 수정</h1>
+
+<form action="/post/edit" method="post">
+    <div class="form-group">
+
+        <input type="hidden" name="id" th:value="${post.getPost_id()}">
+
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" name="title" required th:value="${post.getPost_title()} "><br><br>
+
+        <label for="content">내용:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required th:text="${post.getContents()}"></textarea>
+        <br><br>
+
+    </div>
+    <input type="submit" value="수정하기">
+</form>
+</body>
+</html>

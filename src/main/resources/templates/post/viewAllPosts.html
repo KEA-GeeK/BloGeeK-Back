@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Posts</title>
+</head>
+<body>
+    <div class="containers">
+        <div>
+            <table style="border-collapse: collapse;">
+                <thead>
+                <tr>
+                    <th style="border-left: none;">#</th>
+                    <th style="border-left: 1px solid black;">제목</th>
+                    <th style="border-left: 1px solid black;">본문</th>
+                    <th style="border-left: 1px solid black;">업로드 일자</th>
+                    <th style="border-left: 1px solid black;">업로드 시각</th>
+                    <th style="border-left: 1px solid black;">수정 시각</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="post : ${posts}">
+                        <td th:text="${post.getPost_id}" style="border-left: none;"/>
+                        <td th:text="${post.getPost_title}" style="border-left: 1px solid black;"></td>
+                        <td th:text="${post.getContents}" style="border-left: 1px solid black;"/>
+                        <td th:text="${post.create_at.toLocalDate()}" style="border-left: 1px solid black;"/>
+                        <td th:text="${post.create_at.toLocalTime()}" style="border-left: 1px solid black;"/>
+                        <td th:text="${post.printModificationDate()}" style="border-left: 1px solid black;"/>
+                        <td><a th:href="@{/post/view(id=${post.getPost_id()})}"> 열람 </a></td>
+                        <td>
+                            <form action="/post/allposts" method="post">
+                                <input type="hidden" name="id" th:value="${post.getPost_id}">
+                                <input type="submit" value="삭제">
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

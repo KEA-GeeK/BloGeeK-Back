@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Posts</title>
+</head>
+<body>
+<div class="containers">
+    <div>
+        <h1 th:text="${post.getPost_title()}"/>
+        <p th:text="'업로드 일시 ' +  ${post.getCreate_at().toLocalDate()} + ' ' + ${post.getCreate_at().toLocalTime()}" />
+        <h2  th:text="${post.getContents}"/>
+        <a th:href="@{/post/edit(id=${post.getPost_id()})}">게시글 수정</a>
+
+    </div>
+</div>
+</body>
+</html>
