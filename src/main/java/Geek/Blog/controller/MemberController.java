@@ -51,7 +51,7 @@ public class MemberController {
             return ResponseEntity.notFound().build();
         }
     }
-
+//
     @GetMapping("/delete/{id}")
     public ResponseEntity<MemberDTO> deleteById(@PathVariable Long id) {
         MemberDTO deletedMember = memberService.deleteById(id);
