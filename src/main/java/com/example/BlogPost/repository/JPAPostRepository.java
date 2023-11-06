@@ -1,5 +1,6 @@
 package com.example.BlogPost.repository;
 
+import com.example.BlogPost.DTO.PostUploadDTO;
 import com.example.BlogPost.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -16,9 +17,11 @@ public class JPAPostRepository implements PostRepository{
     }
 
     @Override
-    public Post upload(Post post) {
+    public PostUploadDTO upload(PostUploadDTO uploadDTO) {
+        Post post = new Post();
+        post.importPostData(uploadDTO);
         em.persist(post);
-        return post;
+        return uploadDTO;
     }
 
     @Override

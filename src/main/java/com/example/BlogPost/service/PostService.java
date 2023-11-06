@@ -1,5 +1,6 @@
 package com.example.BlogPost.service;
 
+import com.example.BlogPost.DTO.PostUploadDTO;
 import com.example.BlogPost.entity.Post;
 import com.example.BlogPost.repository.PostRepository;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,7 @@ public class PostService {
     /**
      * 기능
      **/
-    public Integer upload(Post post) {
+    public Integer upload(PostUploadDTO post) {
         postRepository.upload(post);
         return post.getPost_id();
     }
