@@ -1,11 +1,11 @@
 package Geek.Blog.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class LoginDTO {
-    private String id;
+    private String username;
     private String pw;
 }

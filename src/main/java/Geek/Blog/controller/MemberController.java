@@ -1,5 +1,6 @@
 package Geek.Blog.controller;
 
+import Geek.Blog.dto.LoginDTO;
 import Geek.Blog.dto.MemberDTO;
 import Geek.Blog.entity.Member;
 import Geek.Blog.repository.MemberRepository;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api//member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -30,17 +31,21 @@ public class MemberController {
         return member;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody Member data) {
-        try {
-            memberService.login(data);
-            return "success";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return "fail";
-        }
-    }
+//    @PostMapping("/login")
+//    public String login(@RequestBody Member data) {
+//        try {
+//            memberService.login(data);
+//            return "success";
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            return "fail";
+//        }
+//    }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDTO dto){
+        return ResponseEntity.ok().body(memberService.login(dto.getUsername()));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberDTO> findBy(@PathVariable Long id) {

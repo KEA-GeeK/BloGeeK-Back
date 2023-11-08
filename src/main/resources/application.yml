@@ -36,3 +36,7 @@ logging:
     org:
       springframework:
         web=DEBUG:
+
+jwt:
+  secret:
+    key: XNkZi1hc2RmLWFkZi1hc2RmLWFzZGZhc2QtZmFzZGYtYXNkZi1hc2RmYXNkZmFzZGZhc2RmCg==
