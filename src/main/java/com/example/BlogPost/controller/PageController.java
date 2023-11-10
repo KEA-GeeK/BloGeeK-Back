@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-//TODO Comment Controller, Reply들 추가
+//TODO Comment / Reply 검사
 @Controller
 public class PageController {
 
