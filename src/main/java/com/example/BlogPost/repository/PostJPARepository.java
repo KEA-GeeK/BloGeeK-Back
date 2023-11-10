@@ -1,6 +1,6 @@
 package com.example.BlogPost.repository;
 
-import com.example.BlogPost.DTO.PostUploadDTO;
+import com.example.BlogPost.DTO.PostDTO;
 import com.example.BlogPost.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -8,16 +8,16 @@ import jakarta.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-public class JPAPostRepository implements PostRepository{
+public class PostJPARepository implements PostRepository{
 
     private final EntityManager em;
 
-    public JPAPostRepository(EntityManager em) {
+    public PostJPARepository(EntityManager em) {
         this.em = em;
     }
 
     @Override
-    public PostUploadDTO upload(PostUploadDTO uploadDTO) {
+    public PostDTO upload(PostDTO uploadDTO) {
         Post post = new Post();
         post.importPostData(uploadDTO);
         em.persist(post);
@@ -60,6 +60,5 @@ public class JPAPostRepository implements PostRepository{
         query.setParameter("id", id);
 
         return query.executeUpdate();
-
     }
 }

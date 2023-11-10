@@ -1,6 +1,6 @@
 package com.example.BlogPost.service;
 
-import com.example.BlogPost.DTO.PostUploadDTO;
+import com.example.BlogPost.DTO.PostDTO;
 import com.example.BlogPost.entity.Post;
 import com.example.BlogPost.repository.PostRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ public class PostService {
     /**
      * 기능
      **/
-    public Integer upload(PostUploadDTO post) {
+    public Integer upload(PostDTO post) {
         postRepository.upload(post);
         return post.getPost_id();
     }
@@ -34,11 +34,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post editPost(Post post){
-        return postRepository.edit(post);
+    public void editPost(Post post){
+        postRepository.edit(post);
     }
 
-    public Integer deletePost(Post post){
-        return postRepository.deleteById(post.getPost_id());
+    public void deletePost(Post post){
+        postRepository.deleteById(post.getPost_id());
     }
 }

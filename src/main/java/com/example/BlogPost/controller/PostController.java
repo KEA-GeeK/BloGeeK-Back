@@ -1,7 +1,6 @@
 package com.example.BlogPost.controller;
 
-import com.example.BlogPost.DTO.PostEditDTO;
-import com.example.BlogPost.DTO.PostUploadDTO;
+import com.example.BlogPost.DTO.PostDTO;
 import com.example.BlogPost.entity.Post;
 import com.example.BlogPost.service.PostService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,12 +21,12 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public Integer create(@RequestBody PostUploadDTO post) {
+    public Integer createPost(@RequestBody PostDTO post) {
         return postService.upload(post);
     }
 
     @GetMapping("/all")
-    public List<Post> getList() {
+    public List<Post> getPostList() {
         return postService.listPosts();
     }
 
@@ -37,14 +36,14 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String deletePost(@PathVariable Integer id) {
         Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         postService.deletePost(post);
         return "Deleted successfully";
     }
 
     @PatchMapping("/edit/{id}")
-    public Post editPost(@PathVariable Integer id, @RequestBody PostEditDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public Post editPost(@PathVariable Integer id, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
         Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getPost_title() == null || form.getContents() == null) {
             throw new EntityNotFoundException("입력값이 잘못되었습니다.");
