@@ -4,10 +4,12 @@ import com.example.BlogPost.DTO.ReplyDTO;
 import com.example.BlogPost.entity.Reply;
 import com.example.BlogPost.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @Transactional
 public class ReplyService {
 
