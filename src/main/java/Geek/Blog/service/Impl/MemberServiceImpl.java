@@ -7,28 +7,28 @@ import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.MemberService;
 import Geek.Blog.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class MemberServiceImpl implements MemberService {
 
-    @Value("${jwt:secret:key}")
-    private String secretKey;
-    private Long expiredMs = 1000 * 60 * 0l;
     private final MemberRepository memberRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -55,14 +55,20 @@ public class MemberServiceImpl implements MemberService {
      * @return 토큰이 들어있는 객체
      */
     public String generateToken(Object principal, Object credentials, Long memberIdx, String password) throws Exception {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, credentials);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return jwtTokenProvider.createTokens(authentication, memberIdx, password);
-    }
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, credentials);
+            log.info(authenticationToken.toString());
 
-    public void save(MemberDto memberDTO) {
-        Member member = Member.toMemberEntity(memberDTO);
-        memberRepository.save(member);
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+
+            log.info(authentication.toString());
+            return jwtTokenProvider.createTokens(authentication, memberIdx, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+            return null;
+        }
     }
 
     //signIn = 로그인
@@ -83,33 +89,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long signUp(MemberDto requestDto) throws Exception {
-        // 회원 정보 저장
-        Member entity = Member.toMemberEntity(requestDto);
+    public String signUp(MemberDto requestDto) throws Exception {
+        log.info(requestDto.toString());
 
         if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new Exception("이미 가입된 이메일입니다.");
         }
 
-        memberRepository.save(entity);
+        Member member = memberRepository.save(new Member(requestDto));
+        member.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        log.info("생성된 회원: " + member);
 
         // 회원가입 후, 회원의 ID를 반환
-        return entity.getId();
-    }
-
-//    public MemberDto findById(Long id) {
-//        Optional<Member> optionalMemberEntity = memberRepository.findById(id);
-//        if (optionalMemberEntity.isPresent()) {
-//            return new MemberDto(optionalMemberEntity.get()); // optional을 벗겨내서 entity -> dto 변환
-//        } else {
-//            return null;
-//        }
-//    }
-
-    public void delete(Long id) {
-        Optional<Member> optionalMemberEntity = memberRepository.findById(id);
-        if (optionalMemberEntity.isPresent()) {
-            memberRepository.delete(optionalMemberEntity.get());
-        }
+        return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
     }
 }

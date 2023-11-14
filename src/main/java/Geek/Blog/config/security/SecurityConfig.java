@@ -44,8 +44,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/v3/api-docs/**").permitAll() // Swagger는 인증 없이 허용
                         .requestMatchers("/swagger-ui/**").permitAll() // Swagger는 인증 없이 허용
-                        .requestMatchers(HttpMethod.POST, "/blog").permitAll() // 블로그 생성 요청은 인증 없이 허용
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/member/join").permitAll() // 블로그 생성 요청은 인증 없이 허용
+                        .anyRequest().permitAll()
                 );
 //                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 

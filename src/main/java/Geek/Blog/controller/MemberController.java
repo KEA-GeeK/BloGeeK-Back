@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api//member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -45,12 +45,11 @@ public class MemberController {
         }
     }
     @PostMapping("/join")
-    public ResponseEntity<Long> join(@RequestBody MemberDto request) {
+    public ResponseEntity<String> join(@RequestBody MemberDto request) {
         try {
-            Long memberId = memberService.signUp(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(memberId); // 회원가입 성공 시 회원 ID 반환
+            return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signUp(request)); // 회원가입 성공 시 회원 ID 반환
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1L); // 회원가입 실패 시 응답
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(""); // 회원가입 실패 시 응답
         }
     }
 

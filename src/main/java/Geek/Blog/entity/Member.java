@@ -11,11 +11,11 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
+@ToString
 @Getter
 @Setter
 
-//@Table(name = "Member")
+@Table(name = "Member")
 public class Member {
     @Id @Column (name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
@@ -47,13 +47,12 @@ public class Member {
         this.password = passwordEncoder.encode(password);
     }
 
-    public static Member toMemberEntity(MemberDto memberDto){
-        Member memberEntity = new Member();
-        memberEntity.setId(memberDto.getId());
-        memberEntity.setEmail(memberDto.getEmail());
-        memberEntity.setName(memberDto.getName());
-        memberEntity.setPassword(memberDto.getPassword());
-        memberEntity.setInterest(memberDto.getInterest());
-        return memberEntity;
+    public Member(MemberDto memberDto){
+        this.setId(memberDto.getId());
+        this.setEmail(memberDto.getEmail());
+        this.setName(memberDto.getName());
+        this.setPassword(memberDto.getPassword());
+        this.setInterest(memberDto.getInterest());
+        this.role = Role.USER;
     }
 }

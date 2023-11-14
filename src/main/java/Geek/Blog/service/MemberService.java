@@ -10,6 +10,6 @@ public interface MemberService {
 
     public String signIn(SignInRequestDTO requestDto) throws Exception;
 
-    public Long signUp(MemberDto requestDto) throws Exception;
+    public String signUp(MemberDto requestDto) throws Exception;
 
 }
