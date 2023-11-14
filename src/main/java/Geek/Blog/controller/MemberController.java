@@ -1,13 +1,15 @@
 package Geek.Blog.controller;
 
-import Geek.Blog.dto.LoginDTO;
-import Geek.Blog.dto.MemberDTO;
-import Geek.Blog.entity.Member;
+import Geek.Blog.dto.MemberDto;
+import Geek.Blog.dto.SignUpRequestDTO;
+import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.repository.MemberRepository;
+import Geek.Blog.service.Impl.MemberServiceImpl;
 import Geek.Blog.service.MemberService;
-import ch.qos.logback.core.model.Model;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,53 +19,59 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberService;
+   //private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/save")
-    public String saveForm(){
-        return "save~";
-    }
-    @PostMapping("/save")    //name값을 repquestparam에 담아온다.
-    public Member save(@RequestBody Member member) {
-        log.info(member.toString());
-        memberRepository.save(member);
-        return member;
-    }
 
-//    @PostMapping("/login")
-//    public String login(@RequestBody Member data) {
-//        try {
-//            memberService.login(data);
-//            return "success";
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//            return "fail";
-//        }
+//    @PostMapping("/join")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Long join(@Valid @RequestBody SignUpRequestDTO request) throws Exception {
+//        return memberService.signUp(request);
 //    }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO dto){
-        return ResponseEntity.ok().body(memberService.login(dto.getUsername()));
+    @PostMapping("/logIn")
+    public ResponseEntity<String> logIn(@RequestBody SignInRequestDTO request) {
+        try {
+            String token = memberService.signIn(request);
+
+            if (token != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(token); // 로그인 성공 시 토큰 반환
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패"); // 로그인 실패 시 응답
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류"); // 서버 오류 시 응답
+        }
+    }
+    @PostMapping("/join")
+    public ResponseEntity<Long> join(@RequestBody MemberDto request) {
+        try {
+            Long memberId = memberService.signUp(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(memberId); // 회원가입 성공 시 회원 ID 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1L); // 회원가입 실패 시 응답
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberDTO> findBy(@PathVariable Long id) {
-        MemberDTO memberDTO = memberService.findById(id);
-        if (memberDTO != null) {
-            return ResponseEntity.ok(memberDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 //
-    @GetMapping("/delete/{id}")
-    public ResponseEntity<MemberDTO> deleteById(@PathVariable Long id) {
-        MemberDTO deletedMember = memberService.deleteById(id);
-        if (deletedMember != null) {
-            return ResponseEntity.ok(deletedMember);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<MemberDTO> findBy(@PathVariable Long id) {
+//        MemberDto memberDTO = memberServiceImpl.findById(id);
+//        if (memberDTO != null) {
+//            return ResponseEntity.ok(memberDTO);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+////
+//    @GetMapping("/delete/{id}")
+//    public ResponseEntity<MemberDTO> deleteById(@PathVariable Long id) {
+//        MemberDTO deletedMember = memberServiceImpl.deleteById(id);
+//        if (deletedMember != null) {
+//            return ResponseEntity.ok(deletedMember);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 }

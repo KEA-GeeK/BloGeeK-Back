@@ -39,4 +39,5 @@ logging:
 
 jwt:
   secret:
-    key: XNkZi1hc2RmLWFkZi1hc2RmLWFzZGZhc2QtZmFzZGYtYXNkZi1hc2RmYXNkZmFzZGZhc2RmCg==
+    key: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    #    key: XNkZi1hc2RmLWFkZi1hc2RmLWFzZGZhc2QtZmFzZGYtYXNkZi1hc2RmYXNkZmFzZGZhc2RmCg==

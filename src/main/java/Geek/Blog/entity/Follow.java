@@ -1,7 +1,6 @@
 package Geek.Blog.entity;
 
 import Geek.Blog.dto.FollowDTO;
-import Geek.Blog.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
