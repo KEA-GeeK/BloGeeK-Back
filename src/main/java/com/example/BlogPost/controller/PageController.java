@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-//TODO Spring Data JPA 사용 검토
+//TODO Comment / Reply 검사
 @Controller
 public class PageController {
 

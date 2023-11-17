@@ -13,44 +13,44 @@ import java.util.List;
 @RequestMapping("/api/posts/comment")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentService commentservice;
 
     @Autowired
     public CommentController(CommentService commentService) {
-        this.commentService = commentService;
+        this.commentservice = commentService;
     }
 
     @PostMapping("/write")
     public Integer createComment(@RequestBody CommentDTO comment) {
-        return commentService.upload(comment);
+        return commentservice.upload(comment);
     }
 
     @GetMapping("/all")
     public List<Comment> getCommentList() {
-        return commentService.listComments();
+        return commentservice.listComments();
     }
 
     @GetMapping("/{id}")
     public Comment viewComment(@PathVariable Integer id) {
-        return commentService.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
+        return commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
     }
 
     @DeleteMapping("/{id}")
     public String deleteComment(@PathVariable Integer id) {
-        Comment comment = commentService.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
-        commentService.deleteComment(comment);
+        Comment comment = commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
+        commentservice.deleteComment(comment);
         return "Deleted successfully";
     }
 
     @PatchMapping("/edit/{id}")
     public Comment editComment(@PathVariable Integer id, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Comment comment = commentService.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+        Comment comment = commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getContents() == null || form.getContents().isBlank()) {
             throw new EntityNotFoundException("입력값이 잘못되었습니다.");
         }
 
         comment.setContents(form.getContents());
-        commentService.editComment(comment);
+        commentservice.editComment(comment);
         return comment;
     }
 }
