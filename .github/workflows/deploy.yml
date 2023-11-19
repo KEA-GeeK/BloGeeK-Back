@@ -1,0 +1,74 @@
+name: Deploy-Jio
+
+on:
+  push:
+    branches: [ "Jio" ] # Jio 브랜치에 푸시되었을 때만 실행
+
+permissions:
+  contents: read
+
+jobs:
+  # Spring Boot 애플리케이션을 빌드하여 도커허브에 푸시하는 과정
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 1. Java 17 세팅
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      #      # 2. Secret.yml 파일 셋팅
+      #      - name: Set Secret yml file.
+      #        run: |
+      #          touch ./src/main/resources/secret.yml
+      #          echo "${{ secrets.SECRETYML }}" > ./src/main/resources/secret.yml
+      #          cat ./src/main/resources/secret.yml
+
+      # 3. 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      # 4. Spring Boot 애플리케이션 빌드
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+        shell: bash
+
+      # 5. Docker 이미지 빌드
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 6. DockerHub 로그인
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.JIO_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.JIO_DOCKERHUB_TOKEN }}
+
+      # 7. 도커이미지 빌드하고 허브로 푸쉬
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: . # 현재 디렉토리를 컨텍스트로 사용
+          push: true # 이미지를 푸시할 것인지 설정
+          platforms: linux/amd64 # 타겟 플랫폼
+          tags: ${{ secrets.JIO_DOCKERHUB_REPOSITORY }}
+
+#      # 8. 배포
+#      - name: execute remote ssh
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.REMOTE_SSH_HOST }}
+#          username: ${{ secrets.REMOTE_SSH_USERNAME }}
+#          password: ${{ secrets.REMOTE_SSH_PASSWORD }}
+#          port: ${{ secrets.REMOTE_SSH_PORT }}
+#          script: |
+#            docker compose down
+#            docker rmi ${{ secrets.DOCKERHUB_REPOSITORY }}
+#            docker compose up -d
+#
+# Reference: https://github.com/docker/build-push-action
