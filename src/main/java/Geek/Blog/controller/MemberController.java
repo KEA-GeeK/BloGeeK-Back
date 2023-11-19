@@ -1,5 +1,7 @@
 package Geek.Blog.controller;
 
+import Geek.Blog.Response.LoginResponse;
+import Geek.Blog.Response.SignUpResponse;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.dto.SignInRequestDTO;
@@ -20,39 +22,37 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberServiceImpl memberService;
-   //private final MemberService memberService;
     private final MemberRepository memberRepository;
 
 
-//    @PostMapping("/join")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Long join(@Valid @RequestBody SignUpRequestDTO request) throws Exception {
-//        return memberService.signUp(request);
-//    }
-
+    //다시
     @PostMapping("/logIn")
-    public ResponseEntity<String> logIn(@RequestBody SignInRequestDTO request) {
+    public ResponseEntity<LoginResponse> logIn(@RequestBody SignInRequestDTO request) {
         try {
             String token = memberService.signIn(request);
 
             if (token != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(token); // 로그인 성공 시 토큰 반환
+                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponse((token)));
+                //return ResponseEntity.status(HttpStatus.OK).body(token); // 로그인 성공 시 토큰 반환
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패"); // 로그인 실패 시 응답
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("로그인 실패"));
+                //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패"); // 로그인 실패 시 응답
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류"); // 서버 오류 시 응답
-        }
-    }
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody MemberDto request) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signUp(request)); // 회원가입 성공 시 회원 ID 반환
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(""); // 회원가입 실패 시 응답
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginResponse(("")));
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(""); // 서버 오류 시 응답
         }
     }
 
+    @PostMapping("/join")
+    public ResponseEntity<SignUpResponse> join(@RequestBody MemberDto request) {
+        try {
+            String token = memberService.signUp(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new SignUpResponse((token)));// 회원가입 성공 시 회원 ID 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new SignUpResponse("Error during sign-up"));// 회원가입 실패 시 응답
+        }
+    }
 //
 //    @GetMapping("/{id}")
 //    public ResponseEntity<MemberDTO> findBy(@PathVariable Long id) {

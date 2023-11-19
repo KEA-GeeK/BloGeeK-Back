@@ -32,13 +32,17 @@ public class MemberServiceImpl implements MemberService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+
+
+    //다시
     public String login(String email, String password) throws Exception {
         // 데이터베이스에서 이메일과 비밀번호를 확인하여 로그인 처리
         Member member = memberRepository.findByEmail(email)
                 .orElse(null);
         if (member != null && member.getPassword().equals(password)) {
             // 로그인 성공시 JWT 토큰 생성
-            return generateToken(member.getEmail(), member.getPassword(), member.getId(), member.getPassword());
+            String token = generateToken(member.getEmail(), member.getPassword(), member.getId(), member.getPassword());
+            return token;
         } else {
             // 로그인 실패
             return null;
@@ -100,7 +104,7 @@ public class MemberServiceImpl implements MemberService {
         member.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         log.info("생성된 회원: " + member);
 
-        // 회원가입 후, 회원의 ID를 반환
+        // 회원가입 후, 회원의 토큰를 반환
         return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
     }
 }
