@@ -1,18 +1,16 @@
 package Geek.Blog.controller;
 
-import Geek.Blog.Response.LoginResponse;
+import Geek.Blog.Response.SignInResponse;
 import Geek.Blog.Response.SignUpResponse;
 import Geek.Blog.dto.MemberDto;
-import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.Impl.MemberServiceImpl;
-import Geek.Blog.service.MemberService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -23,26 +21,13 @@ public class MemberController {
 
     private final MemberServiceImpl memberService;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-
-    //다시
-    @PostMapping("/logIn")
-    public ResponseEntity<LoginResponse> logIn(@RequestBody SignInRequestDTO request) {
-        try {
-            String token = memberService.signIn(request);
-
-            if (token != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponse((token)));
-                //return ResponseEntity.status(HttpStatus.OK).body(token); // 로그인 성공 시 토큰 반환
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("로그인 실패"));
-                //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패"); // 로그인 실패 시 응답
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginResponse(("")));
-            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(""); // 서버 오류 시 응답
-        }
+    @PostMapping("/login")
+    public ResponseEntity<SignInResponse> login(@RequestBody SignInRequestDTO request) throws Exception{
+        return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
     }
+
 
     @PostMapping("/join")
     public ResponseEntity<SignUpResponse> join(@RequestBody MemberDto request) {

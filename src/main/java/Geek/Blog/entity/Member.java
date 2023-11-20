@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +29,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
     private Long id;
 
+    @Column(unique = true, length = 20)
+    private String account;
+
     @Column(length = 50)
     private String password;
 
@@ -41,24 +47,24 @@ public class Member {
     @Column(name = "interest")
     private Set<Interest> interests;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Authority> roles = new ArrayList<>();
 
-//    public void addUserAuthority() {
-//        this.role = Role.USER;
-//    }
-
-    public void encodePassword(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(password);
+    private void setRoles(List<Authority> role){
+        this.roles = role;
+        role.forEach(o -> o.setMember(this));
     }
+
 
     public Member(MemberDto memberDto){
         this.setEmail(memberDto.getEmail());
         this.setId(memberDto.getId());
+        this.setAccount(memberDto.getAccount());
         this.setPassword(memberDto.getPassword());
         this.setGender(memberDto.getGender());
         this.setBirthday((memberDto.getBirthday()));
         this.setInterests(memberDto.getInterests());
-        this.role = Role.USER;
+        this.setRoles(memberDto.getRoles());
     }
 }

@@ -1,16 +1,15 @@
 package Geek.Blog.dto;
 
-import Geek.Blog.entity.Gender;
-import Geek.Blog.entity.Interest;
-import Geek.Blog.entity.Member;
-import Geek.Blog.entity.Role;
+import Geek.Blog.entity.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,6 +23,9 @@ public class SignUpRequestDTO {
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 
+    @NotBlank(message = "계정을 입력해주세요")
+    private String account;
+
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String checkPassword;
 
@@ -34,17 +36,18 @@ public class SignUpRequestDTO {
 
     private Set<Interest> interests;
 
-    private Role role;
+    private List<Authority> roles = new ArrayList<>();
 
     @Builder
     public Member toEntity(){
         return Member.builder()
                 .email(email)
+                .account(account)
                 .password(password)
                 .gender(gender)
                 .birthday(birthday)
                 .interests(interests)
-                .role(Role.USER)
+                .roles(roles)
                 .build();
     }
 }
