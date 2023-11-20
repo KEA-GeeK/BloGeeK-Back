@@ -4,10 +4,12 @@ import com.example.BlogPost.DTO.PostDTO;
 import com.example.BlogPost.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PostJPARepository implements PostRepository{
 
     private final EntityManager em;

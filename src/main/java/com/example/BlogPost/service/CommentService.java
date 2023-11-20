@@ -4,11 +4,13 @@ import com.example.BlogPost.DTO.CommentDTO;
 import com.example.BlogPost.entity.Comment;
 import com.example.BlogPost.repository.CommentRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
+@Service
 public class CommentService {
 
     private final CommentRepository commentRepository;

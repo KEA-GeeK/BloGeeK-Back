@@ -4,12 +4,14 @@ import com.example.BlogPost.DTO.PostDTO;
 import com.example.BlogPost.entity.Post;
 import com.example.BlogPost.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 //TODO DB에서 받아온 데이터가 유효한지 try catch
 @Transactional
+@Service
 public class PostService {
 
     private final PostRepository postRepository;

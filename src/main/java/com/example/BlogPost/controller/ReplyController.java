@@ -30,21 +30,21 @@ public class ReplyController {
         return replyService.listReplies();
     }
 
-    @GetMapping("/{id}")
-    public Reply viewReply(@PathVariable Integer id) {
-        return replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+    @GetMapping("/{replyId}")
+    public Reply viewReply(@PathVariable Integer replyId) {
+        return replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteReply(@PathVariable Integer id) {
-        Reply reply = replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+    @DeleteMapping("/{replyId}")
+    public String deleteReply(@PathVariable Integer replyId) {
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
         replyService.deleteReply(reply);
         return "Deleted successfully";
     }
 
-    @PatchMapping("/edit/{id}")
-    public Reply editReply(@PathVariable Integer id, @RequestBody ReplyDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Reply reply = replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @PatchMapping("/{replyId}")
+    public Reply editReply(@PathVariable Integer replyId, @RequestBody ReplyDTO form) {  // @PathVariable 및 @RequestBody 사용
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getContents() == null || form.getContents().isBlank()) {
             throw new EntityNotFoundException("입력값이 잘못되었습니다.");
         }

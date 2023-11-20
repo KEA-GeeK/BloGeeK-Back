@@ -4,10 +4,12 @@ import com.example.BlogPost.DTO.CommentDTO;
 import com.example.BlogPost.entity.Comment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class CommentJPARepository implements CommentRepository{
 
     private final EntityManager em;

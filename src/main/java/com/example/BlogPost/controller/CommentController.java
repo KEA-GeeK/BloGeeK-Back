@@ -30,19 +30,19 @@ public class CommentController {
         return commentservice.listComments();
     }
 
-    @GetMapping("/{id}")
-    public Comment viewComment(@PathVariable Integer id) {
-        return commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
+    @GetMapping("/{commentId}")
+    public Comment viewComment(@PathVariable Integer commentId) {
+        return commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteComment(@PathVariable Integer id) {
-        Comment comment = commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
+    @DeleteMapping("/{commentId}")
+    public String deleteComment(@PathVariable Integer commentId) {
+        Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 댓글입니다."));
         commentservice.deleteComment(comment);
         return "Deleted successfully";
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{commentId}")
     public Comment editComment(@PathVariable Integer id, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
         Comment comment = commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getContents() == null || form.getContents().isBlank()) {

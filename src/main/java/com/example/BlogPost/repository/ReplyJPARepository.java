@@ -4,10 +4,12 @@ import com.example.BlogPost.DTO.ReplyDTO;
 import com.example.BlogPost.entity.Reply;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ReplyJPARepository implements ReplyRepository{
 
     private final EntityManager em;

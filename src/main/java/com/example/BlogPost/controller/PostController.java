@@ -30,21 +30,21 @@ public class PostController {
         return postService.listPosts();
     }
 
-    @GetMapping("/{id}")
-    public Post viewPost(@PathVariable Integer id) {
-        return postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @GetMapping("/{postId}")
+    public Post viewPost(@PathVariable Integer postId) {
+        return postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
     }
 
-    @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable Integer id) {
-        Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @DeleteMapping("/{postId}")
+    public String deletePost(@PathVariable Integer postId) {
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         postService.deletePost(post);
         return "Deleted successfully";
     }
 
-    @PatchMapping("/edit/{id}")
-    public Post editPost(@PathVariable Integer id, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @PatchMapping("/{postId}")
+    public Post editPost(@PathVariable Integer postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getPost_title() == null || form.getContents() == null) {
             throw new EntityNotFoundException("입력값이 잘못되었습니다.");
         } else if (form.getPost_title().isBlank() || form.getContents().isBlank()){
