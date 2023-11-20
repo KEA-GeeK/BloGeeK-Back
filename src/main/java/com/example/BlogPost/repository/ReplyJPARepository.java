@@ -3,6 +3,7 @@ package com.example.BlogPost.repository;
 import com.example.BlogPost.DTO.ReplyDTO;
 import com.example.BlogPost.entity.Reply;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,15 +14,19 @@ import java.util.Optional;
 public class ReplyJPARepository implements ReplyRepository{
 
     private final EntityManager em;
+    private final CommentRepository commentRepository;
 
-    public ReplyJPARepository(EntityManager em) {
+    public ReplyJPARepository(EntityManager em, CommentRepository commentRepository) {
         this.em = em;
+        this.commentRepository = commentRepository;
     }
 
     @Override
     public ReplyDTO upload(ReplyDTO replyDTO) {
         Reply reply = new Reply();
         reply.setContents(replyDTO.getContents());
+        reply.setComment(commentRepository.findById(replyDTO.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getAuthor_id())));
         em.persist(reply);
         return replyDTO;
     }
