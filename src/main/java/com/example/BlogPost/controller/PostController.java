@@ -21,8 +21,14 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public Integer createPost(@RequestBody PostDTO post) {
-        return postService.upload(post);
+    public String createPost(@RequestBody PostDTO post) {
+        Integer result = postService.upload(post);
+        if (result == -1 ){
+            return "Upload Failed";
+        }
+        else {
+            return "Upload complete at ID " + result;
+        }
     }
 
     @GetMapping("/all")

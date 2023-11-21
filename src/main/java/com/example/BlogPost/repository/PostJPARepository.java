@@ -19,11 +19,12 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public PostDTO upload(PostDTO uploadDTO) {
+    public Post upload(PostDTO uploadDTO) {
         Post post = new Post();
         post.importPostData(uploadDTO);
         em.persist(post);
-        return uploadDTO;
+
+        return post;
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository {
-    PostDTO upload(PostDTO post);
+    Post upload(PostDTO post);
     Optional<Post> findById(Integer id);
     Optional<Post> findByTitle(String title);
     List<Post> findAll();
