@@ -22,13 +22,13 @@ public class ReplyJPARepository implements ReplyRepository{
     }
 
     @Override
-    public ReplyDTO upload(ReplyDTO replyDTO) {
+    public Reply upload(ReplyDTO replyDTO) {
         Reply reply = new Reply();
         reply.setContents(replyDTO.getContents());
         reply.setComment(commentRepository.findById(replyDTO.getAuthor_id())
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getAuthor_id())));
         em.persist(reply);
-        return replyDTO;
+        return reply;
     }
 
     @Override

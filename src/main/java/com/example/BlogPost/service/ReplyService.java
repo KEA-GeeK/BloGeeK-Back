@@ -23,8 +23,14 @@ public class ReplyService {
      * 기능
      **/
     public Integer upload(ReplyDTO replyDTO) {
-        replyRepository.upload(replyDTO);
-        return replyDTO.getReply_id();
+        Reply reply = replyRepository.upload(replyDTO);
+
+        if (reply.getReply_id() != null){
+            return reply.getReply_id();
+        }
+        else {
+            return -1;
+        }
     }
 
     public Optional<Reply> viewReply(Integer replyId) {

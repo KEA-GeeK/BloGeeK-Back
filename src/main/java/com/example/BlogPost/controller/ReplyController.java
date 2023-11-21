@@ -21,8 +21,14 @@ public class ReplyController {
     }
 
     @PostMapping("/write")
-    public Integer createReply(@RequestBody ReplyDTO replyDTO) {
-        return replyService.upload(replyDTO);
+    public String createReply(@RequestBody ReplyDTO replyDTO) {
+        Integer result = replyService.upload(replyDTO);
+        if (result == -1 ){
+            return "Upload Failed";
+        }
+        else {
+            return "Upload complete at ID " + result;
+        }
     }
 
     @GetMapping("/all")
