@@ -9,7 +9,7 @@ public class ReplyDTO {
     private Integer reply_id = null;
     private String contents;
     private Integer author_id;
-    private Integer category_id;
+    private Integer comment_id;
     public ReplyDTO() {
     }
 }

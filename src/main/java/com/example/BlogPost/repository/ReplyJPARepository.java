@@ -25,8 +25,8 @@ public class ReplyJPARepository implements ReplyRepository{
     public Reply upload(ReplyDTO replyDTO) {
         Reply reply = new Reply();
         reply.setContents(replyDTO.getContents());
-        reply.setComment(commentRepository.findById(replyDTO.getAuthor_id())
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getAuthor_id())));
+        reply.setComment(commentRepository.findById(replyDTO.getComment_id())
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getComment_id())));
         em.persist(reply);
         return reply;
     }
