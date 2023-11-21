@@ -22,14 +22,14 @@ public class CommentJPARepository implements CommentRepository{
     }
 
     @Override
-    public CommentDTO upload(CommentDTO commentDTO) {
+    public Comment upload(CommentDTO commentDTO) {
         Comment comment = new Comment();
         comment.setContents(commentDTO.getContents());
         comment.setPost(postRepository.findById(commentDTO.getAuthor_id())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + commentDTO.getAuthor_id())));
 
         em.persist(comment);
-        return commentDTO;
+        return comment;
     }
 
     @Override

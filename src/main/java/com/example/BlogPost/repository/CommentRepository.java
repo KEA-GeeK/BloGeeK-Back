@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository {
-    CommentDTO upload(CommentDTO commentDTO);
+    Comment upload(CommentDTO commentDTO);
     Optional<Comment> findById(Integer id);
     List<Comment> findAll();
     Comment edit(Comment comment);

@@ -20,9 +20,16 @@ public class CommentController {
         this.commentservice = commentService;
     }
 
+
     @PostMapping("/write")
-    public Integer createComment(@RequestBody CommentDTO comment) {
-        return commentservice.upload(comment);
+    public String createComment(@RequestBody CommentDTO comment) {
+        Integer result = commentservice.upload(comment);
+        if (result == -1 ){
+            return "Upload Failed";
+        }
+        else {
+            return "Upload complete at ID " + result;
+        }
     }
 
     @GetMapping("/all")
