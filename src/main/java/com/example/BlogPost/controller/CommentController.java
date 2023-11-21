@@ -50,8 +50,8 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public Comment editComment(@PathVariable Integer id, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Comment comment = commentservice.viewComment(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    public Comment editComment(@PathVariable Integer commentId, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
+        Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
         if (form.getContents() == null || form.getContents().isBlank()) {
             throw new EntityNotFoundException("입력값이 잘못되었습니다.");
         }
