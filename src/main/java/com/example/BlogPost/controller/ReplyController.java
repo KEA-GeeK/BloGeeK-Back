@@ -38,21 +38,21 @@ public class ReplyController {
 
     @GetMapping("/{replyId}")
     public Reply viewReply(@PathVariable Integer replyId) {
-        return replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+        return replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
     @DeleteMapping("/{replyId}")
     public String deleteReply(@PathVariable Integer replyId) {
-        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         replyService.deleteReply(reply);
         return "Deleted successfully";
     }
 
     @PatchMapping("/{replyId}")
     public Reply editReply(@PathVariable Integer replyId, @RequestBody ReplyDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getContents() == null || form.getContents().isBlank()) {
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         }
 
         reply.setContents(form.getContents());

@@ -38,23 +38,23 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public Post viewPost(@PathVariable Integer postId) {
-        return postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+        return postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
     @DeleteMapping("/{postId}")
     public String deletePost(@PathVariable Integer postId) {
-        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         postService.deletePost(post);
         return "Deleted successfully";
     }
 
     @PatchMapping("/{postId}")
     public Post editPost(@PathVariable Integer postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getPost_title() == null || form.getContents() == null) {
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         } else if (form.getPost_title().isBlank() || form.getContents().isBlank()){
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         }
 
         post.setPost_title(form.getPost_title());

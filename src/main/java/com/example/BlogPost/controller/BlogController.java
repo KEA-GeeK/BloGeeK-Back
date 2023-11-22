@@ -20,16 +20,16 @@ public class BlogController {
 
     @GetMapping("/{blogId}")
     public Blog viewBlog(@PathVariable Integer blogId) {
-        return blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 블로그입니다."));
+        return blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("Invaild ID"));
     }
 
     @PatchMapping("/{blogId}")
     public Blog editBlog(@PathVariable Integer blogId, @RequestBody BlogDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Blog blog = blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 블로그입니다."));
+        Blog blog = blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("Invaild ID"));
         if (form.getBlog_name() == null) {
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         } else if (form.getBlog_name().isBlank()){
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         }
 
         blog.setBlog_name(form.getBlog_name());
