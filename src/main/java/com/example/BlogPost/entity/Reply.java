@@ -3,6 +3,7 @@ package com.example.BlogPost.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.attoparser.dom.Text;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,12 +15,12 @@ import java.time.LocalDateTime;
 public class Reply {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reply_id;
+    private Long reply_id;
 
-    private Integer author_id;
+    private Long author_id;
 
     @Column(nullable = false)
-    private String contents;
+    private Text contents;
 
     @Column(nullable = false) @CreationTimestamp
     private LocalDateTime create_at;

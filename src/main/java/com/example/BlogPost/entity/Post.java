@@ -4,6 +4,7 @@ import com.example.BlogPost.DTO.PostDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.attoparser.dom.Text;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,15 +16,15 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer post_id;
+    private Long post_id;
 
     @Column(nullable = false)
-    private String post_title;
+    private Text post_title;
 
     @Column(nullable = false)
-    private String contents;
+    private Text contents;
 
-    private Integer author_id;
+    private Long author_id;
 
     @Column(nullable = false) @CreationTimestamp
     private LocalDateTime create_at;
@@ -31,15 +32,15 @@ public class Post {
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
 
-    private Integer category_id;
+    private Long category_id;
 
 
-    public Post(Integer post_id, String post_title, String contents) {
+    public Post(Long post_id, Text post_title, Text contents) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.contents = contents;
     }
-    public Post(String post_title, String contents) {
+    public Post(Text post_title, Text contents) {
         this.post_title = post_title;
         this.contents = contents;
     }

@@ -2,14 +2,15 @@ package com.example.BlogPost.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.attoparser.dom.Text;
 
 @Getter
 @Setter
 public class CommentDTO {
-    private Integer comment_id = null;
-    private String contents;
-    private Integer author_id;
-    private Integer category_id;
+    private Long comment_id = null;
+    private Text contents;
+    private Long author_id;
+    private Long category_id;
 
     public CommentDTO() {
     }

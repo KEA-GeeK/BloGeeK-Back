@@ -3,6 +3,7 @@ package com.example.BlogPost.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.attoparser.dom.Text;
 
 @Getter
 @Setter
@@ -10,17 +11,17 @@ import lombok.Setter;
 public class Blog {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer blog_id;
+    private Long blog_id;
 
     @Column(nullable = false)
-    private String blog_name;
+    private Text blog_name;
 
-    private String about_blog;
+    private Text about_blog;
 
     @Lob
     private byte[] profilePicture;
 
-    private Integer owner_id;
+    private Long owner_id;
 
     public Blog() {
     }
