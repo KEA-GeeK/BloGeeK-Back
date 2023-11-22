@@ -32,8 +32,8 @@ public class Member {
     @Column(unique = true, length = 20)
     private String account;
 
-    @Column(length = 50)
-    private String password;
+    @Column(length=500)
+   private String password;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
