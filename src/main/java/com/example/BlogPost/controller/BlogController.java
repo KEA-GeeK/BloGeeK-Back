@@ -34,7 +34,7 @@ public class BlogController {
 
         blog.setBlog_name(form.getBlog_name());
         blog.setAbout_blog(form.getAbout_blog());
-        blog.setProfilePicture(form.getProfilePicture());
+        blog.setProfile_picture(form.getProfilePicture());
 
         blogService.editBlog(blog);
         return blog;

@@ -22,13 +22,14 @@ public class CommentController {
 
 
     @PostMapping("/write")
-    public String createComment(@RequestBody CommentDTO comment) {
-        Integer result = commentservice.upload(comment);
-        if (result == -1 ){
-            return "Upload Failed";
+    public Comment createComment(@RequestBody CommentDTO commentDTO) {
+        Comment comment = commentservice.upload(commentDTO);
+
+        if (comment == null) {
+            throw new RuntimeException("댓글 등록에 실패했습니다.");
         }
-        else {
-            return "Upload complete at ID " + result;
+        else{
+            return comment;
         }
     }
 
@@ -38,19 +39,19 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
-    public Comment viewComment(@PathVariable Integer commentId) {
+    public Comment viewComment(@PathVariable Long commentId) {
         return commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
     @DeleteMapping("/{commentId}")
-    public String deleteComment(@PathVariable Integer commentId) {
+    public String deleteComment(@PathVariable Long commentId) {
         Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         commentservice.deleteComment(comment);
         return "Deleted successfully";
     }
 
     @PatchMapping("/{commentId}")
-    public Comment editComment(@PathVariable Integer commentId, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public Comment editComment(@PathVariable Long commentId, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
         Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getContents() == null || form.getContents().isBlank()) {
             throw new EntityNotFoundException("Invalid Input");

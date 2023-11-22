@@ -6,7 +6,7 @@ import com.example.BlogPost.entity.Blog;
 import java.util.Optional;
 
 public interface BlogRepository {
-    BlogDTO create(BlogDTO blog);
+    Blog create(BlogDTO blog);
     Optional<Blog> findById(Integer id);
     Blog edit(Blog blog);
     Integer deleteById(Integer id);

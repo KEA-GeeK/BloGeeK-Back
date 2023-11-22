@@ -19,9 +19,9 @@ public class BlogService {
     }
 
 
-    public Integer upload(BlogDTO blog) {
-        blogRepository.create(blog);
-        return blog.getBlog_id();
+    public Blog upload(BlogDTO blogDTO) {
+        Blog blog = blogRepository.create(blogDTO);
+        return blog;
     }
 
     public Optional<Blog> viewBlog(Integer blogId) {

@@ -3,7 +3,6 @@ package com.example.BlogPost.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.attoparser.dom.Text;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -20,7 +19,7 @@ public class Reply {
     private Long author_id;
 
     @Column(nullable = false)
-    private Text contents;
+    private String contents;
 
     @Column(nullable = false) @CreationTimestamp
     private LocalDateTime create_at;

@@ -4,7 +4,6 @@ import com.example.BlogPost.DTO.PostDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.attoparser.dom.Text;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,10 +18,10 @@ public class Post {
     private Long post_id;
 
     @Column(nullable = false)
-    private Text post_title;
+    private String post_title;
 
     @Column(nullable = false)
-    private Text contents;
+    private String contents;
 
     private Long author_id;
 
@@ -35,12 +34,12 @@ public class Post {
     private Long category_id;
 
 
-    public Post(Long post_id, Text post_title, Text contents) {
+    public Post(Long post_id, String post_title, String contents) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.contents = contents;
     }
-    public Post(Text post_title, Text contents) {
+    public Post(String post_title, String contents) {
         this.post_title = post_title;
         this.contents = contents;
     }
@@ -48,9 +47,8 @@ public class Post {
         this.post_id = uploadDTO.getPost_id();
         this.post_title = uploadDTO.getPost_title();
         this.contents = uploadDTO.getContents();
-        //외래키
-//        this.author_id = uploadDTO.getAuthor_id();
-//        this.category_id = uploadDTO.getCategory_id();
+        this.author_id = uploadDTO.getAuthor_id();
+        this.category_id = uploadDTO.getCategory_id();
     }
 
     public Post() {

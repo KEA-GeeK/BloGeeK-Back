@@ -23,20 +23,16 @@ public class PostService {
     /**
      * 기능
      **/
-    public Integer upload(PostDTO postDTO) {
-        Post post = postRepository.upload(postDTO);
-
-        if (post.getPost_id() != null){
-            return post.getPost_id();
+    public Post upload(PostDTO postDTO) {
+        try {
+            Post post = postRepository.upload(postDTO);
+            return post;
+        } catch (Exception e) {
+            return null;
         }
-        else {
-            return -1;
-        }
-
-
     }
 
-    public Optional<Post> viewPost(Integer postId) {
+    public Optional<Post> viewPost(Long postId) {
             return postRepository.findById(postId);
     }
 

@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface ReplyRepository {
     Reply upload(ReplyDTO replyDTO);
-    Optional<Reply> findById(Integer id);
+    Optional<Reply> findById(Long id);
     List<Reply> findAll();
     Reply edit(Reply reply);
-    Integer deleteById(Integer id);
+    Integer deleteById(Long id);
 }

@@ -22,18 +22,16 @@ public class ReplyService {
     /**
      * 기능
      **/
-    public Integer upload(ReplyDTO replyDTO) {
-        Reply reply = replyRepository.upload(replyDTO);
-
-        if (reply.getReply_id() != null){
-            return reply.getReply_id();
-        }
-        else {
-            return -1;
+    public Reply upload(ReplyDTO replyDTO) {
+        try {
+            Reply reply = replyRepository.upload(replyDTO);
+            return reply;
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    public Optional<Reply> viewReply(Integer replyId) {
+    public Optional<Reply> viewReply(Long replyId) {
             return replyRepository.findById(replyId);
     }
 

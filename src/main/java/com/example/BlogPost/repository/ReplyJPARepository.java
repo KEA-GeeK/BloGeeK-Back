@@ -32,7 +32,7 @@ public class ReplyJPARepository implements ReplyRepository{
     }
 
     @Override
-    public Optional<Reply> findById(Integer id) {
+    public Optional<Reply> findById(Long id) {
         Reply reply = em.find(Reply.class, id);
         return Optional.ofNullable(reply);
     }
@@ -53,7 +53,7 @@ public class ReplyJPARepository implements ReplyRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Reply r WHERE r.reply_id = :id");
         query.setParameter("id", id);
 

@@ -33,7 +33,7 @@ public class CommentJPARepository implements CommentRepository{
     }
 
     @Override
-    public Optional<Comment> findById(Integer id) {
+    public Optional<Comment> findById(Long id) {
         Comment comment = em.find(Comment.class, id);
         return Optional.ofNullable(comment);
     }
@@ -54,7 +54,7 @@ public class CommentJPARepository implements CommentRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Comment c WHERE c.comment_id = :id");
         query.setParameter("id", id);
 

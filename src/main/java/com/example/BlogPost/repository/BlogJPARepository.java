@@ -18,16 +18,16 @@ public class BlogJPARepository implements BlogRepository{
     }
 
     @Override
-    public BlogDTO create(BlogDTO blogDTO) {
+    public Blog create(BlogDTO blogDTO) {
         Blog blog = new Blog();
 
         blog.setBlog_name(blogDTO.getBlog_name());
         blog.setAbout_blog(blogDTO.getAbout_blog());
-        blog.setProfilePicture(blogDTO.getProfilePicture());
+        blog.setProfile_picture(blogDTO.getProfilePicture());
         blog.setOwner_id(blogDTO.getOwner_id());
 
         em.persist(blog);
-        return blogDTO;
+        return blog;
     }
 
     @Override
@@ -38,10 +38,10 @@ public class BlogJPARepository implements BlogRepository{
 
     @Override
     public Blog edit(Blog blog) {
-        Query query = em.createQuery("UPDATE Blog b SET b.blog_name = :newBlogName, b.about_blog = :newAboutBlog, b.profilePicture = :newProfilePicture WHERE b.blog_id = :id");
+        Query query = em.createQuery("UPDATE Blog b SET b.blog_name = :newBlogName, b.about_blog = :newAboutBlog, b.profile_picture = :newProfilePicture WHERE b.blog_id = :id");
         query.setParameter("newBlogName", blog.getBlog_name());
         query.setParameter("newAboutBlog", blog.getAbout_blog());
-        query.setParameter("newProfilePicture", blog.getProfilePicture());
+        query.setParameter("newProfilePicture", blog.getProfile_picture());
         query.setParameter("id", blog.getBlog_id());
 
         query.executeUpdate();

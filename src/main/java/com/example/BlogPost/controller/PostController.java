@@ -21,13 +21,14 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public String createPost(@RequestBody PostDTO post) {
-        Integer result = postService.upload(post);
-        if (result == -1 ){
-            return "Upload Failed";
+    public Post createPost(@RequestBody PostDTO postDTO) {
+        Post post = postService.upload(postDTO);
+
+        if (post == null) {
+            throw new RuntimeException("게시글 등록에 실패했습니다.");
         }
-        else {
-            return "Upload complete at ID " + result;
+        else{
+            return post;
         }
     }
 
@@ -37,19 +38,19 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Post viewPost(@PathVariable Integer postId) {
+    public Post viewPost(@PathVariable Long postId) {
         return postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
     @DeleteMapping("/{postId}")
-    public String deletePost(@PathVariable Integer postId) {
+    public String deletePost(@PathVariable Long postId) {
         Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         postService.deletePost(post);
         return "Deleted successfully";
     }
 
     @PatchMapping("/{postId}")
-    public Post editPost(@PathVariable Integer postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public Post editPost(@PathVariable Long postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
         Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getPost_title() == null || form.getContents() == null) {
             throw new EntityNotFoundException("Invalid Input");

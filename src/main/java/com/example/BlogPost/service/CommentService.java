@@ -22,19 +22,17 @@ public class CommentService {
     /**
      * 기능
      **/
-    public Integer upload(CommentDTO commentDTO) {
-        Comment comment = commentRepository.upload(commentDTO);
-
-        if (comment.getComment_id() != null){
-            return comment.getComment_id();
+    public Comment upload(CommentDTO commentDTO) {
+        try {
+            Comment comment = commentRepository.upload(commentDTO);
+            return comment;
+        } catch (Exception e) {
+            return null;
         }
-        else {
-            return -1;
-        }
-
     }
 
-    public Optional<Comment> viewComment(Integer commentId) {
+
+    public Optional<Comment> viewComment(Long commentId) {
             return commentRepository.findById(commentId);
     }
 

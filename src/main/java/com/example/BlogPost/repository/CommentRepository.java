@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface CommentRepository {
     Comment upload(CommentDTO commentDTO);
-    Optional<Comment> findById(Integer id);
+    Optional<Comment> findById(Long id);
     List<Comment> findAll();
     Comment edit(Comment comment);
-    Integer deleteById(Integer id);
+    Integer deleteById(Long id);
 }
