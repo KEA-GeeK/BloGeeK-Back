@@ -1,18 +1,14 @@
 package Geek.Blog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
+@Setter
 //signIn = 로그인
 public class SignInRequestDTO {
-    private String email;
+    private String account;
     private String password;
-
-
 }

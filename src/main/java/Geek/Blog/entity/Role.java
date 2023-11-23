@@ -1,5 +1,7 @@
 package Geek.Blog.entity;
 
 public enum Role {
-    USER, AUTHOR, ADMIN;
+    USER,
+    AUTHOR,
+    ADMIN
 }

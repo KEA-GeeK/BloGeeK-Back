@@ -37,6 +37,7 @@ dependencies {
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
+	implementation 'ch.qos.logback:logback-classic'
 	annotationProcessor 'org.projectlombok:lombok'
 }
 

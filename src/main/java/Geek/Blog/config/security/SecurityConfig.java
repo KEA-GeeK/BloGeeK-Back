@@ -5,27 +5,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig  {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private UserDetailService userDetailService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,11 +42,35 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/v3/api-docs/**").permitAll() // Swagger는 인증 없이 허용
                         .requestMatchers("/swagger-ui/**").permitAll() // Swagger는 인증 없이 허용
-                        .requestMatchers(HttpMethod.POST, "/api/member/join").permitAll() // 블로그 생성 요청은 인증 없이 허용
+                        .requestMatchers(HttpMethod.POST, "/api/member/login").permitAll() // 로그인 요청은 인증 없이 허용
+                        .requestMatchers(HttpMethod.POST, "/api/member/join").permitAll() // 회원가입 요청은 인증 없이 허용
+//                        .requestMatchers(HttpMethod.DELETE, "/api/member/withdraw").authenticated() // 회원탈퇴 요청은 인증 요구
+                        .requestMatchers(HttpMethod.POST, "/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/user/**").hasRole("USER")
                         .anyRequest().permitAll()
                 );
-//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//         .and()
+//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling()
+//                .accessDeniedHandler(new AccessDeniedHandler(){
+//                    public void handle(HttpServletRequest request, HttpServletResponse response , AccessDeniedException accessDeniedException) throws IOException, ServletException{
+//                        response.setStatus(403);
+//                        response.setCharacterEncoding("utf-8");
+//                        response.setContentType("text/html; charset = UTF-8");
+//                        response.getWriter().write("권한이 없는 사용자입니다");
+//                    }
+//                });
+               // .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+   //     return  PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+
 }

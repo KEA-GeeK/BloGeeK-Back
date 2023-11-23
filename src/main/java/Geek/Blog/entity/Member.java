@@ -5,7 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,42 +25,63 @@ import java.util.Date;
 
 @Table(name = "Member")
 public class Member {
-    @Id @Column (name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private Long id;
+    private static final Logger log = LoggerFactory.getLogger(Member.class);
 
-    @Column
-    private String name;
 
     @Column(unique = true, length = 45)
     private String email;
 
-    @Column(length = 50)
+    @Id @Column (name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
+    private Long id;
+
+    @Column(unique = true, length = 20)
+    private String account;
+
+    @Column(length=500)
     private String password;
 
-    @Column
-    private String interest;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column
     private Date birthday;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @CollectionTable(name = "member_interests", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "interest")
+    private Set<Interest> interests;
 
-    public void addUserAuthority() {
-        this.role = Role.USER;
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Authority> roles = new ArrayList<>();
+
+    //@Column(columnDefinition = "TEXT")
+    @Column(length=500)
+    private String token;
+
+
+    private void setRoles(List<Authority> role){
+        this.roles = role;
+        role.forEach(o -> o.setMember(this));
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(password);
+    public void updateToken(String newToken) {
+        this.token = newToken;
+        log.info("Token updated: {}", newToken);
     }
+
 
     public Member(MemberDto memberDto){
-        this.setId(memberDto.getId());
         this.setEmail(memberDto.getEmail());
-        this.setName(memberDto.getName());
+        this.setId(memberDto.getId());
+        this.setAccount(memberDto.getAccount());
         this.setPassword(memberDto.getPassword());
-        this.setInterest(memberDto.getInterest());
-        this.role = Role.USER;
+        this.setGender(memberDto.getGender());
+        this.setBirthday((memberDto.getBirthday()));
+        this.setInterests(memberDto.getInterests());
+        this.setRoles(memberDto.getRoles());
+        this.setToken(memberDto.getToken());
     }
 }
