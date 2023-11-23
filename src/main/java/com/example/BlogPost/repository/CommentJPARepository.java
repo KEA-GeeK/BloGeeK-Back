@@ -2,6 +2,7 @@ package com.example.BlogPost.repository;
 
 import com.example.BlogPost.DTO.CommentDTO;
 import com.example.BlogPost.entity.Comment;
+import com.example.BlogPost.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
@@ -39,8 +40,15 @@ public class CommentJPARepository implements CommentRepository{
     }
 
     @Override
-    public List<Comment> findAll() {
-        return em.createQuery("SELECT c FROM Comment c", Comment.class).getResultList();
+    public List<Comment> findPostComment(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+
+        Query query = em.createQuery("SELECT c FROM Comment c WHERE c.post = :post", Comment.class);
+        query.setParameter("post", post);
+
+        @SuppressWarnings("unchecked")
+        List<Comment> result = query.getResultList();
+        return  result;
     }
 
     @Override

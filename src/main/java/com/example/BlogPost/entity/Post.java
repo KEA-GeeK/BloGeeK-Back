@@ -33,32 +33,13 @@ public class Post {
 
     private Long category_id;
 
-
-    public Post(Long post_id, String post_title, String contents) {
-        this.post_id = post_id;
-        this.post_title = post_title;
-        this.contents = contents;
-    }
-    public Post(String post_title, String contents) {
-        this.post_title = post_title;
-        this.contents = contents;
-    }
-    public Post(PostDTO uploadDTO){
-        this.post_id = uploadDTO.getPost_id();
-        this.post_title = uploadDTO.getPost_title();
-        this.contents = uploadDTO.getContents();
-        this.author_id = uploadDTO.getAuthor_id();
-        this.category_id = uploadDTO.getCategory_id();
-    }
-
     public Post() {
     }
 
     public void importPostData(PostDTO uploadDTO){
         this.post_title = uploadDTO.getPost_title();
         this.contents = uploadDTO.getContents();
-        //외래키
-//        this.author_id = uploadDTO.getAuthor_id();
-//        this.category_id = uploadDTO.getCategory_id();
+        this.author_id = uploadDTO.getAuthor_id();
+        this.category_id = uploadDTO.getCategory_id();
     }
 }

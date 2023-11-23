@@ -36,8 +36,8 @@ public class CommentService {
             return commentRepository.findById(commentId);
     }
 
-    public List<Comment> listComments() {
-        return commentRepository.findAll();
+    public List<Comment> listCommentsOfPost(Long postId) {
+        return commentRepository.findPostComment(postId);
     }
 
     public void editComment(Comment comment){
