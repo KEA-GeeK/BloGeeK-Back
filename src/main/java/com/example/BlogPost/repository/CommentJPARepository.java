@@ -14,36 +14,41 @@ import java.util.Optional;
 @Repository
 public class CommentJPARepository implements CommentRepository{
 
-    private final PostRepository postRepository;
     private final EntityManager em;
+    private final PostRepository postRepository;
 
-    public CommentJPARepository(PostRepository postRepository, EntityManager em) {
-        this.postRepository = postRepository;
+    public CommentJPARepository(EntityManager em, PostRepository postRepository) {
         this.em = em;
+        this.postRepository = postRepository;
     }
 
     @Override
-    public CommentDTO upload(CommentDTO commentDTO) {
+    public Comment upload(CommentDTO commentDTO) {
         Comment comment = new Comment();
         comment.setContents(commentDTO.getContents());
-
-        Post post = postRepository.findById(commentDTO.getPost_id())
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        comment.setPost(post);
+        comment.setPost(postRepository.findById(commentDTO.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + commentDTO.getAuthor_id())));
 
         em.persist(comment);
-        return commentDTO;
+        return comment;
     }
 
     @Override
-    public Optional<Comment> findById(Integer id) {
+    public Optional<Comment> findById(Long id) {
         Comment comment = em.find(Comment.class, id);
         return Optional.ofNullable(comment);
     }
 
     @Override
-    public List<Comment> findAll() {
-        return em.createQuery("SELECT c FROM Comment c", Comment.class).getResultList();
+    public List<Comment> findPostComment(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+
+        Query query = em.createQuery("SELECT c FROM Comment c WHERE c.post = :post", Comment.class);
+        query.setParameter("post", post);
+
+        @SuppressWarnings("unchecked")
+        List<Comment> result = query.getResultList();
+        return  result;
     }
 
     @Override
@@ -57,7 +62,7 @@ public class CommentJPARepository implements CommentRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Comment c WHERE c.comment_id = :id");
         query.setParameter("id", id);
 

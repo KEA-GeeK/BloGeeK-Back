@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
+@Service
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -22,17 +22,22 @@ public class CommentService {
     /**
      * 기능
      **/
-    public Integer upload(CommentDTO comment) {
-        commentRepository.upload(comment);
-        return comment.getComment_id();
+    public Comment upload(CommentDTO commentDTO) {
+        try {
+            Comment comment = commentRepository.upload(commentDTO);
+            return comment;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public Optional<Comment> viewComment(Integer commentId) {
+
+    public Optional<Comment> viewComment(Long commentId) {
             return commentRepository.findById(commentId);
     }
 
-    public List<Comment> listComments() {
-        return commentRepository.findAll();
+    public List<Comment> listCommentsOfPost(Long postId) {
+        return commentRepository.findPostComment(postId);
     }
 
     public void editComment(Comment comment){

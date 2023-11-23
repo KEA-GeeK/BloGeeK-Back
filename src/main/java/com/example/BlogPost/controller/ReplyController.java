@@ -21,8 +21,18 @@ public class ReplyController {
     }
 
     @PostMapping("/write")
-    public Integer createReply(@RequestBody ReplyDTO replyDTO) {
-        return replyService.upload(replyDTO);
+    public Reply createReply(@RequestBody ReplyDTO replyDTO) {
+        Reply reply = replyService.upload(replyDTO);
+
+        if (reply == null) {
+            throw new RuntimeException("답글 등록에 실패했습니다.");
+        }
+        else{
+            return reply;
+        }
+
+
+
     }
 
     @GetMapping("/all")
@@ -30,23 +40,23 @@ public class ReplyController {
         return replyService.listReplies();
     }
 
-    @GetMapping("/{id}")
-    public Reply viewReply(@PathVariable Integer id) {
-        return replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+    @GetMapping("/{replyId}")
+    public Reply viewReply(@PathVariable Long replyId) {
+        return replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteReply(@PathVariable Integer id) {
-        Reply reply = replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 답글입니다."));
+    @DeleteMapping("/{replyId}")
+    public String deleteReply(@PathVariable Long replyId) {
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         replyService.deleteReply(reply);
         return "Deleted successfully";
     }
 
-    @PatchMapping("/edit/{id}")
-    public Reply editReply(@PathVariable Integer id, @RequestBody ReplyDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Reply reply = replyService.viewReply(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @PatchMapping("/{replyId}")
+    public Reply editReply(@PathVariable Long replyId, @RequestBody ReplyDTO form) {  // @PathVariable 및 @RequestBody 사용
+        Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getContents() == null || form.getContents().isBlank()) {
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         }
 
         reply.setContents(form.getContents());

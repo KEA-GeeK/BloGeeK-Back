@@ -1,7 +1,6 @@
 package com.example.BlogPost.repository;
 
 import com.example.BlogPost.DTO.ReplyDTO;
-import com.example.BlogPost.entity.Comment;
 import com.example.BlogPost.entity.Reply;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,29 +13,26 @@ import java.util.Optional;
 @Repository
 public class ReplyJPARepository implements ReplyRepository{
 
-    private final CommentRepository commentRepository;
     private final EntityManager em;
+    private final CommentRepository commentRepository;
 
-    public ReplyJPARepository(CommentRepository commentRepository, EntityManager em) {
-        this.commentRepository = commentRepository;
+    public ReplyJPARepository(EntityManager em, CommentRepository commentRepository) {
         this.em = em;
+        this.commentRepository = commentRepository;
     }
 
     @Override
-    public ReplyDTO upload(ReplyDTO replyDTO) {
+    public Reply upload(ReplyDTO replyDTO) {
         Reply reply = new Reply();
         reply.setContents(replyDTO.getContents());
-
-        Comment comment = commentRepository.findById(replyDTO.getComment_id())
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
-        reply.setComment(comment);
-
+        reply.setComment(commentRepository.findById(replyDTO.getComment_id())
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getComment_id())));
         em.persist(reply);
-        return replyDTO;
+        return reply;
     }
 
     @Override
-    public Optional<Reply> findById(Integer id) {
+    public Optional<Reply> findById(Long id) {
         Reply reply = em.find(Reply.class, id);
         return Optional.ofNullable(reply);
     }
@@ -57,7 +53,7 @@ public class ReplyJPARepository implements ReplyRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Reply r WHERE r.reply_id = :id");
         query.setParameter("id", id);
 

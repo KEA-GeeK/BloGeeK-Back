@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer post_id;
+    private Long post_id;
 
     @Column(nullable = false)
     private String post_title;
@@ -23,7 +23,7 @@ public class Post {
     @Column(nullable = false)
     private String contents;
 
-    private Integer author_id;
+    private Long author_id;
 
     @Column(nullable = false) @CreationTimestamp
     private LocalDateTime create_at;
@@ -31,26 +31,7 @@ public class Post {
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
 
-    private Integer category_id;
-
-
-    public Post(Integer post_id, String post_title, String contents) {
-        this.post_id = post_id;
-        this.post_title = post_title;
-        this.contents = contents;
-    }
-    public Post(String post_title, String contents) {
-        this.post_title = post_title;
-        this.contents = contents;
-    }
-    public Post(PostDTO uploadDTO){
-        this.post_id = uploadDTO.getPost_id();
-        this.post_title = uploadDTO.getPost_title();
-        this.contents = uploadDTO.getContents();
-        //외래키
-//        this.author_id = uploadDTO.getAuthor_id();
-//        this.category_id = uploadDTO.getCategory_id();
-    }
+    private Long category_id;
 
     public Post() {
     }
@@ -58,8 +39,7 @@ public class Post {
     public void importPostData(PostDTO uploadDTO){
         this.post_title = uploadDTO.getPost_title();
         this.contents = uploadDTO.getContents();
-        //외래키
-//        this.author_id = uploadDTO.getAuthor_id();
-//        this.category_id = uploadDTO.getCategory_id();
+        this.author_id = uploadDTO.getAuthor_id();
+        this.category_id = uploadDTO.getCategory_id();
     }
 }

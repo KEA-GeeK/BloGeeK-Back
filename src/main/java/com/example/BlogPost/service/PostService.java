@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 //TODO DB에서 받아온 데이터가 유효한지 try catch
-@Service
 @Transactional
+@Service
 public class PostService {
 
     private final PostRepository postRepository;
@@ -23,12 +23,16 @@ public class PostService {
     /**
      * 기능
      **/
-    public Integer upload(PostDTO post) {
-        postRepository.upload(post);
-        return post.getPost_id();
+    public Post upload(PostDTO postDTO) {
+        try {
+            Post post = postRepository.upload(postDTO);
+            return post;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public Optional<Post> viewPost(Integer postId) {
+    public Optional<Post> viewPost(Long postId) {
             return postRepository.findById(postId);
     }
 

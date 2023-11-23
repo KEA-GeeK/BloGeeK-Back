@@ -19,15 +19,16 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public PostDTO upload(PostDTO uploadDTO) {
+    public Post upload(PostDTO uploadDTO) {
         Post post = new Post();
         post.importPostData(uploadDTO);
         em.persist(post);
-        return uploadDTO;
+
+        return post;
     }
 
     @Override
-    public Optional<Post> findById(Integer id) {
+    public Optional<Post> findById(Long id) {
         Post post = em.find(Post.class, id);
         return Optional.ofNullable(post);
     }
@@ -57,7 +58,7 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Post p WHERE p.post_id = :id");
         query.setParameter("id", id);
 

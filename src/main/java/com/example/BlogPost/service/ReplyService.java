@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
+@Service
 public class ReplyService {
 
     private final ReplyRepository replyRepository;
@@ -22,12 +22,16 @@ public class ReplyService {
     /**
      * 기능
      **/
-    public Integer upload(ReplyDTO replyDTO) {
-        replyRepository.upload(replyDTO);
-        return replyDTO.getReply_id();
+    public Reply upload(ReplyDTO replyDTO) {
+        try {
+            Reply reply = replyRepository.upload(replyDTO);
+            return reply;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public Optional<Reply> viewReply(Integer replyId) {
+    public Optional<Reply> viewReply(Long replyId) {
             return replyRepository.findById(replyId);
     }
 

@@ -21,8 +21,15 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public Integer createPost(@RequestBody PostDTO post) {
-        return postService.upload(post);
+    public Post createPost(@RequestBody PostDTO postDTO) {
+        Post post = postService.upload(postDTO);
+
+        if (post == null) {
+            throw new RuntimeException("게시글 등록에 실패했습니다.");
+        }
+        else{
+            return post;
+        }
     }
 
     @GetMapping("/all")
@@ -30,25 +37,25 @@ public class PostController {
         return postService.listPosts();
     }
 
-    @GetMapping("/{id}")
-    public Post viewPost(@PathVariable Integer id) {
-        return postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @GetMapping("/{postId}")
+    public Post viewPost(@PathVariable Long postId) {
+        return postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
-    @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable Integer id) {
-        Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @DeleteMapping("/{postId}")
+    public String deletePost(@PathVariable Long postId) {
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         postService.deletePost(post);
         return "Deleted successfully";
     }
 
-    @PatchMapping("/edit/{id}")
-    public Post editPost(@PathVariable Integer id, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
-        Post post = postService.viewPost(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
+    @PatchMapping("/{postId}")
+    public Post editPost(@PathVariable Long postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
+        Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getPost_title() == null || form.getContents() == null) {
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         } else if (form.getPost_title().isBlank() || form.getContents().isBlank()){
-            throw new EntityNotFoundException("입력값이 잘못되었습니다.");
+            throw new EntityNotFoundException("Invalid Input");
         }
 
         post.setPost_title(form.getPost_title());

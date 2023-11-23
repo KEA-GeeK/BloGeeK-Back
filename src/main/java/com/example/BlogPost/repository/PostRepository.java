@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository {
-    PostDTO upload(PostDTO post);
-    Optional<Post> findById(Integer id);
+    Post upload(PostDTO post);
+    Optional<Post> findById(Long id);
     Optional<Post> findByTitle(String title);
     List<Post> findAll();
 
     Post edit(Post post);
-    Integer deleteById(Integer id);
+    Integer deleteById(Long id);
 }
