@@ -34,7 +34,6 @@ public class SignInResponse {
         this.birthday = member.getBirthday();
         this.interests = member.getInterests();
         this.roles = member.getRoles();
-
+        this.token = member.getToken();
     }
-
 }

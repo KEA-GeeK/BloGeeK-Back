@@ -44,6 +44,7 @@ public class SecurityConfig  {
                         .requestMatchers("/swagger-ui/**").permitAll() // Swagger는 인증 없이 허용
                         .requestMatchers(HttpMethod.POST, "/api/member/login").permitAll() // 로그인 요청은 인증 없이 허용
                         .requestMatchers(HttpMethod.POST, "/api/member/join").permitAll() // 회원가입 요청은 인증 없이 허용
+//                        .requestMatchers(HttpMethod.DELETE, "/api/member/withdraw").authenticated() // 회원탈퇴 요청은 인증 요구
                         .requestMatchers(HttpMethod.POST, "/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/user/**").hasRole("USER")
                         .anyRequest().permitAll()
@@ -68,7 +69,7 @@ public class SecurityConfig  {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-        //return  PasswordEncoderFactories.createDelegatingPasswordEncoder();
+   //     return  PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 

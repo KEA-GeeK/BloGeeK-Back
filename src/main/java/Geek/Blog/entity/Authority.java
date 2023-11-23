@@ -17,7 +17,9 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
-    private String name;
+
+    @Enumerated(EnumType.STRING) // Enum의 문자열을 사용하도록 지정
+    private Role name;
 
     @JoinColumn(name = "member")
     @ManyToOne(fetch = FetchType.LAZY)
