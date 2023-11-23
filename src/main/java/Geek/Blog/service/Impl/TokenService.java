@@ -1,4 +1,5 @@
 package Geek.Blog.service.Impl;
+import Geek.Blog.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -6,11 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+
+@Service
 public class TokenService {
-    @Value("${app.jwt.secret}")
+    @Value("${jwt.secret.key}")
     private String jwtSecret;
 
-    @Value("${app.jwt.expiration-ms}")
+    @Value("${jwt.expiration-ms}")
     private long jwtExpirationMs;
 
     public String generateToken(String userId) {
@@ -24,6 +27,7 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
 
     public String extractUserId(String token) {
         Claims claims = Jwts.parser()

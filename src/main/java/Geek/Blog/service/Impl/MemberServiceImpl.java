@@ -1,6 +1,7 @@
 package Geek.Blog.service.Impl;
 
 import Geek.Blog.Response.SignInResponse;
+import Geek.Blog.Response.SignUpResponse;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.entity.Member;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Slf4j
 //@Builder
 @Service
+@Transactional
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class MemberServiceImpl implements MemberService {
@@ -36,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private TokenService tokenService;
+    private  TokenService tokenService;
 
     //로그인
     public SignInResponse login(SignInRequestDTO request) throws Exception {
@@ -57,6 +59,12 @@ public class MemberServiceImpl implements MemberService {
             throw new BadCredentialsException("잘못된 비밀번호 입니다.");
         }
 
+        // 로그인 성공 시 토큰 업데이트
+        String newToken = generateToken(member.getEmail(), request.getPassword(), member.getId(), request.getPassword());
+        member.updateToken(newToken);
+
+        log.info("Token updated successfully: {}", newToken);
+
         return SignInResponse.builder()
                 .id(member.getId())
                 .account(member.getAccount())
@@ -66,7 +74,8 @@ public class MemberServiceImpl implements MemberService {
                 .birthday(member.getBirthday())
                 .interests(member.getInterests())
                 .roles(member.getRoles())
-                .token(generateToken(member.getEmail(), request.getPassword(), member.getId(), request.getPassword()))
+                //.token(generateToken(member.getEmail(), request.getPassword(), member.getId(), request.getPassword()))
+                .token(newToken)
                 .build();
     }
 
@@ -85,12 +94,17 @@ public class MemberServiceImpl implements MemberService {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, credentials);
             log.info(authenticationToken.toString());
-
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-
             log.info(authentication.toString());
-            return jwtTokenProvider.createTokens(authentication, memberIdx, password);
+
+            // 로그인 성공 시에만 토큰을 생성
+            if (authentication.isAuthenticated()) {
+                return jwtTokenProvider.createTokens(authentication, memberIdx, password);
+            } else {
+                return null; // 로그인 실패 시에는 토큰을 생성하지 않음
+            }
+
+            //return jwtTokenProvider.createTokens(authentication, memberIdx, password);
         } catch (Exception e) {
             e.printStackTrace();
             e.getMessage();
@@ -114,7 +128,8 @@ public class MemberServiceImpl implements MemberService {
         log.info("생성된 회원: " + member);
 
         // 회원가입 후, 회원의 토큰를 반환
-        return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
+        //return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
+        return "회원가입에 성공햤습니다.";
     }
 
     //회원탈퇴

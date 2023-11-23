@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +25,8 @@ import java.util.Set;
 
 @Table(name = "Member")
 public class Member {
+    private static final Logger log = LoggerFactory.getLogger(Member.class);
+
 
     @Column(unique = true, length = 45)
     private String email;
@@ -33,7 +39,7 @@ public class Member {
     private String account;
 
     @Column(length=500)
-   private String password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -51,9 +57,19 @@ public class Member {
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
 
+    //@Column(columnDefinition = "TEXT")
+    @Column(length=500)
+    private String token;
+
+
     private void setRoles(List<Authority> role){
         this.roles = role;
         role.forEach(o -> o.setMember(this));
+    }
+
+    public void updateToken(String newToken) {
+        this.token = newToken;
+        log.info("Token updated: {}", newToken);
     }
 
 
@@ -66,5 +82,6 @@ public class Member {
         this.setBirthday((memberDto.getBirthday()));
         this.setInterests(memberDto.getInterests());
         this.setRoles(memberDto.getRoles());
+        this.setToken(memberDto.getToken());
     }
 }

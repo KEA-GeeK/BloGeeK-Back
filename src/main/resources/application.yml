@@ -41,3 +41,4 @@ jwt:
   secret:
     key: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
     #    key: XNkZi1hc2RmLWFkZi1hc2RmLWFzZGZhc2QtZmFzZGYtYXNkZi1hc2RmYXNkZmFzZGZhc2RmCg==
+  expiration-ms: 3600000
