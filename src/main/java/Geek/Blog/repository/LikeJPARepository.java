@@ -1,8 +1,9 @@
 package Geek.Blog.repository;
 
-import Geek.Blog.entity.Post;
 import Geek.Blog.dto.LikeDTO;
 import Geek.Blog.entity.Like;
+import Geek.Blog.entity.Member;
+import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
@@ -17,10 +18,12 @@ public class LikeJPARepository implements LikeRepository{
 
     private final EntityManager em;
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
-    public LikeJPARepository(EntityManager em, PostRepository postRepository) {
+    public LikeJPARepository(EntityManager em, PostRepository postRepository, MemberRepository memberRepository) {
         this.em = em;
         this.postRepository = postRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -28,8 +31,8 @@ public class LikeJPARepository implements LikeRepository{
         Like like = new Like();
         like.setPost(postRepository.findById(likeDTO.getPost_id())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + likeDTO.getPost_id())));
-
-        like.setMember_id(likeDTO.getMember_id());
+        like.setMember(memberRepository.findById(likeDTO.getMember_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + likeDTO.getMember_id())));
 
         return like;
     }
@@ -43,10 +46,11 @@ public class LikeJPARepository implements LikeRepository{
         @Override
         public Optional<Like> findByPostMember(Long postId, Long memberId) {
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Invaild Member."));
 
-            Query query = em.createQuery("SELECT l FROM Like l WHERE l.post = :post AND l.member_id = :memberId");
+            Query query = em.createQuery("SELECT l FROM Like l WHERE l.post = :post AND l.member = :member");
             query.setParameter("post", post);
-            query.setParameter("memberId", memberId);
+            query.setParameter("member", member);
 
             try {
                 return Optional.ofNullable((Like) query.getSingleResult());

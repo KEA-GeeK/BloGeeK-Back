@@ -3,6 +3,7 @@ package Geek.Blog.repository;
 import Geek.Blog.dto.BlogDTO;
 import Geek.Blog.entity.Blog;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class BlogJPARepository implements BlogRepository{
 
     private final EntityManager em;
+    private final MemberRepository memberRepository;
 
-    public BlogJPARepository(EntityManager em) {
+    public BlogJPARepository(EntityManager em, MemberRepository memberRepository) {
         this.em = em;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -24,7 +27,8 @@ public class BlogJPARepository implements BlogRepository{
         blog.setBlog_name(blogDTO.getBlog_name());
         blog.setAbout_blog(blogDTO.getAbout_blog());
         blog.setProfile_picture(blogDTO.getProfilePicture());
-        blog.setOwner_id(blogDTO.getOwner_id());
+        blog.setOwner(memberRepository.findById(blogDTO.getOwner_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + blogDTO.getOwner_id())));
 
         em.persist(blog);
         return blog;

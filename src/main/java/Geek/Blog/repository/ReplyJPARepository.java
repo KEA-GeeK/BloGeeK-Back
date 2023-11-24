@@ -15,10 +15,12 @@ public class ReplyJPARepository implements ReplyRepository{
 
     private final EntityManager em;
     private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
 
-    public ReplyJPARepository(EntityManager em, CommentRepository commentRepository) {
+    public ReplyJPARepository(EntityManager em, CommentRepository commentRepository, MemberRepository memberRepository) {
         this.em = em;
         this.commentRepository = commentRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -27,6 +29,9 @@ public class ReplyJPARepository implements ReplyRepository{
         reply.setContents(replyDTO.getContents());
         reply.setComment(commentRepository.findById(replyDTO.getComment_id())
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + replyDTO.getComment_id())));
+        reply.setAuthor(memberRepository.findById(replyDTO.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + replyDTO.getAuthor_id())));
+
         em.persist(reply);
         return reply;
     }

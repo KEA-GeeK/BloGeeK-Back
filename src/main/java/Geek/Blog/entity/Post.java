@@ -24,7 +24,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
-    private Member member;
+    private Member author;
 
     @Column(nullable = false) @CreationTimestamp
     private LocalDateTime create_at;

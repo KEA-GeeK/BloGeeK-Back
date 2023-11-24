@@ -1,8 +1,8 @@
 package Geek.Blog.service;
 
-import Geek.Blog.repository.CommentRepository;
 import Geek.Blog.dto.CommentDTO;
 import Geek.Blog.entity.Comment;
+import Geek.Blog.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

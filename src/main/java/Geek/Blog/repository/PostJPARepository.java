@@ -3,6 +3,7 @@ package Geek.Blog.repository;
 import Geek.Blog.dto.PostDTO;
 import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,9 @@ public class PostJPARepository implements PostRepository{
         Post post = new Post();
         post.setPost_title(postDTO.getPost_title());
         post.setContents(postDTO.getContents());
-        //TODO post.setMember(memberRepository.findBy???());
+        post.setAuthor(memberRepository.findById(postDTO.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + postDTO.getAuthor_id())));
+
         em.persist(post);
 
         return post;

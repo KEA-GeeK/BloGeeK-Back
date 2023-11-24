@@ -16,10 +16,12 @@ public class CommentJPARepository implements CommentRepository{
 
     private final EntityManager em;
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
-    public CommentJPARepository(EntityManager em, PostRepository postRepository) {
+    public CommentJPARepository(EntityManager em, PostRepository postRepository, MemberRepository memberRepository) {
         this.em = em;
         this.postRepository = postRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -28,6 +30,8 @@ public class CommentJPARepository implements CommentRepository{
         comment.setContents(commentDTO.getContents());
         comment.setPost(postRepository.findById(commentDTO.getAuthor_id())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + commentDTO.getAuthor_id())));
+        comment.setAuthor(memberRepository.findById(commentDTO.getAuthor_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + commentDTO.getAuthor_id())));
 
         em.persist(comment);
         return comment;

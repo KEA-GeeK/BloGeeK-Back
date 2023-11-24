@@ -1,8 +1,8 @@
 package Geek.Blog.service;
 
+import Geek.Blog.dto.PostDTO;
 import Geek.Blog.entity.Post;
 import Geek.Blog.repository.PostRepository;
-import Geek.Blog.dto.PostDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

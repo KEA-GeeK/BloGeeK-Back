@@ -20,7 +20,9 @@ public class Blog {
     @Lob
     private byte[] profile_picture;
 
-    private Long owner_id;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private Member owner;
 
     public Blog() {
     }
