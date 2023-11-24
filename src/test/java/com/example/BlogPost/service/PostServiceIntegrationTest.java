@@ -1,7 +1,8 @@
 package com.example.BlogPost.service;
 
-import com.example.BlogPost.entity.Post;
-import com.example.BlogPost.repository.PostRepository;
+import Geek.Blog.entity.Post;
+import Geek.Blog.repository.PostRepository;
+import Geek.Blog.service.PostService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class PostServiceIntegrationTest {
 
-    @Autowired PostService postService;
+    @Autowired
+    PostService postService;
     @Autowired PostRepository postRepository;
 
     @Test
