@@ -18,17 +18,21 @@ public class BlogService {
         this.blogRepository = blogRepository;
     }
 
-
-    public Blog upload(BlogDTO blogDTO) {
-        Blog blog = blogRepository.create(blogDTO);
-        return blog;
-    }
-
-    public Optional<Blog> viewBlog(Integer blogId) {
+    public Optional<Blog> viewBlog(Long blogId) {
             return blogRepository.findById(blogId);
     }
 
     public void editBlog(Blog blog){
         blogRepository.edit(blog);
+    }
+
+    /** 회원 가입,탈퇴시 사용 (BlogController에서 사용 X)**/
+    //TODO 회원 가입·회원 탈퇴 과정에 끼워넣기
+    public Blog create(BlogDTO blogDTO) {
+        Blog blog = blogRepository.create(blogDTO);
+        return blog;
+    }
+    public void deleteBlog(Blog blog){
+        blogRepository.deleteById(blog.getBlog_id());
     }
 }

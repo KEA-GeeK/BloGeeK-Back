@@ -1,11 +1,15 @@
 package Geek.Blog.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity @Table(name = "blog")
 public class Blog {
 
@@ -23,7 +27,4 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Member owner;
-
-    public Blog() {
-    }
 }

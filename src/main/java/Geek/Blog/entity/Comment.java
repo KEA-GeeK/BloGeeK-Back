@@ -1,7 +1,9 @@
 package Geek.Blog.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity @Table(name = "comments")
 public class Comment {
 
@@ -32,7 +36,4 @@ public class Comment {
 
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
-
-    public Comment() {
-    }
 }

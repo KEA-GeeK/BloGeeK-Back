@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BlogRepository {
     Blog create(BlogDTO blog);
-    Optional<Blog> findById(Integer id);
+    Optional<Blog> findById(Long id);
     Blog edit(Blog blog);
-    Integer deleteById(Integer id);
+    Integer deleteById(Long id);
 }

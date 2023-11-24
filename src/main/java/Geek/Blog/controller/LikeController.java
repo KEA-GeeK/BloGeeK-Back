@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts/like")
@@ -20,7 +21,7 @@ public class LikeController {
     }
 
     @PostMapping("/")
-    public Like createLike(@RequestBody LikeDTO likeDTO) {
+    public LikeDTO createLike(@RequestBody LikeDTO likeDTO) {
 
         Like like = likeService.addLike(likeDTO);
 
@@ -28,12 +29,15 @@ public class LikeController {
             throw new RuntimeException("좋아요 추가에 실패했습니다.");
         }
         else {
-            return like;
+            return new LikeDTO(like);
         }
     }
 
     @GetMapping("/all")
-    public List<Like> getLikeList() {
-        return likeService.listLikes();
+    public List<LikeDTO> getLikeList() {
+        List<Like> likes = likeService.listLikes();
+        return likes.stream()
+                .map(LikeDTO::new) // Post 객체를 PostResponseDTO 객체로 변환
+                .collect(Collectors.toList()); // 결과를 List로 수집
     }
 }

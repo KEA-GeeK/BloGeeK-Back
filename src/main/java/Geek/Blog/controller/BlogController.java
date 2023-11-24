@@ -19,12 +19,14 @@ public class BlogController {
     }
 
     @GetMapping("/{blogId}")
-    public Blog viewBlog(@PathVariable Integer blogId) {
-        return blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("Invaild ID"));
+    public BlogDTO viewBlog(@PathVariable Long blogId) {
+        return blogService.viewBlog(blogId) //Optional<Post>
+                .map(BlogDTO::new) // Blog 객체를 BlogResponseDTO로 변환
+                .orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
     }
 
     @PatchMapping("/{blogId}")
-    public Blog editBlog(@PathVariable Integer blogId, @RequestBody BlogDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public BlogDTO editBlog(@PathVariable Long blogId, @RequestBody BlogDTO form) {  // @PathVariable 및 @RequestBody 사용
         Blog blog = blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("Invaild ID"));
         if (form.getBlog_name() == null) {
             throw new EntityNotFoundException("Invalid Input");
@@ -37,6 +39,7 @@ public class BlogController {
         blog.setProfile_picture(form.getProfilePicture());
 
         blogService.editBlog(blog);
-        return blog;
+
+        return new BlogDTO(blog);
     }
 }

@@ -35,7 +35,7 @@ public class BlogJPARepository implements BlogRepository{
     }
 
     @Override
-    public Optional<Blog> findById(Integer id) {
+    public Optional<Blog> findById(Long id) {
         Blog blog = em.find(Blog.class, id);
         return Optional.ofNullable(blog);
     }
@@ -53,7 +53,7 @@ public class BlogJPARepository implements BlogRepository{
     }
 
     @Override
-    public Integer deleteById(Integer id) {
+    public Integer deleteById(Long id) {
         Query query = em.createQuery("DELETE FROM Blog b WHERE b.blog_id = :id");
         query.setParameter("id", id);
 
