@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostDTO {
-    private Long post_id = null;
     private String post_title;
     private String contents;
     private Long author_id;

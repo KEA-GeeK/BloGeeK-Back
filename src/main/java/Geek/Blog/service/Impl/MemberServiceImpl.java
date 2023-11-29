@@ -1,18 +1,16 @@
 package Geek.Blog.service.Impl;
 
 import Geek.Blog.Response.SignInResponse;
-import Geek.Blog.Response.SignUpResponse;
+import Geek.Blog.dto.BlogDTO;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.entity.Member;
+import Geek.Blog.repository.BlogRepository;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.MemberService;
 import Geek.Blog.util.JwtTokenProvider;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,8 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -35,10 +31,14 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final BlogRepository blogRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
     private  TokenService tokenService;
+
+
 
     //로그인
     public SignInResponse login(SignInRequestDTO request) throws Exception {
@@ -127,9 +127,12 @@ public class MemberServiceImpl implements MemberService {
         member.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         log.info("생성된 회원: " + member);
 
+        BlogDTO blogDTO = new BlogDTO(member);
+        blogRepository.create(blogDTO);
+
         // 회원가입 후, 회원의 토큰를 반환
         //return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
-        return "회원가입에 성공햤습니다.";
+        return "회원가입에 성공했습니다.";
     }
 
     //회원탈퇴

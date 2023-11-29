@@ -3,13 +3,9 @@ package Geek.Blog.entity;
 import Geek.Blog.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,6 +56,9 @@ public class Member {
     //@Column(columnDefinition = "TEXT")
     @Column(length=500)
     private String token;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+    private Blog blog;
 
 
     private void setRoles(List<Authority> role){

@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyDTO {
+public class PostEditDTO {
+    private String post_title;
     private String contents;
-    private Long author_id;
-    private Long comment_id;
 }

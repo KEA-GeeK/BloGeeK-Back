@@ -1,6 +1,8 @@
 package Geek.Blog.dto;
 
 import Geek.Blog.entity.Blog;
+import Geek.Blog.entity.Member;
+import Geek.Blog.util.ImageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,12 @@ public class BlogDTO {
         about_blog = blog.getAbout_blog();
         profilePicture = blog.getProfile_picture();
         owner_id = blog.getOwner().getId();
+    }
+
+    public BlogDTO(Member member){
+        blog_name = member.getAccount() + "의 블로그";
+        about_blog = "어서오세요 " + member.getAccount() + "의 블로그 입니다.";
+        profilePicture = ImageUtil.convertImageToByteArray("src/main/resources/static/images/default-profile.png");
+        owner_id = member.getId();
     }
 }

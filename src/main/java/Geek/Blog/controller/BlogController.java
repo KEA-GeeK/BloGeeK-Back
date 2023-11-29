@@ -1,6 +1,7 @@
 package Geek.Blog.controller;
 
 import Geek.Blog.dto.BlogDTO;
+import Geek.Blog.dto.BlogEditDTO;
 import Geek.Blog.entity.Blog;
 import Geek.Blog.service.BlogService;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,7 +27,7 @@ public class BlogController {
     }
 
     @PatchMapping("/{blogId}")
-    public BlogDTO editBlog(@PathVariable Long blogId, @RequestBody BlogDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public BlogDTO editBlog(@PathVariable Long blogId, @RequestBody BlogEditDTO form) {  // @PathVariable 및 @RequestBody 사용
         Blog blog = blogService.viewBlog(blogId).orElseThrow(() -> new EntityNotFoundException("Invaild ID"));
         if (form.getBlog_name() == null) {
             throw new EntityNotFoundException("Invalid Input");

@@ -2,6 +2,7 @@ package Geek.Blog.repository;
 
 import Geek.Blog.dto.BlogDTO;
 import Geek.Blog.entity.Blog;
+import Geek.Blog.util.ImageUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
@@ -45,18 +46,15 @@ public class BlogJPARepository implements BlogRepository{
         Query query = em.createQuery("UPDATE Blog b SET b.blog_name = :newBlogName, b.about_blog = :newAboutBlog, b.profile_picture = :newProfilePicture WHERE b.blog_id = :id");
         query.setParameter("newBlogName", blog.getBlog_name());
         query.setParameter("newAboutBlog", blog.getAbout_blog());
-        query.setParameter("newProfilePicture", blog.getProfile_picture());
+        if(blog.getProfile_picture() == null) { //이미지 삭제 요청이 들어올 경우
+            query.setParameter("newProfilePicture", ImageUtil.convertImageToByteArray("src/main/resources/static/images/default-profile.png"));
+        }
+        else {
+            query.setParameter("newProfilePicture", blog.getProfile_picture());
+        }
         query.setParameter("id", blog.getBlog_id());
 
         query.executeUpdate();
         return blog;
-    }
-
-    @Override
-    public Integer deleteById(Long id) {
-        Query query = em.createQuery("DELETE FROM Blog b WHERE b.blog_id = :id");
-        query.setParameter("id", id);
-
-        return query.executeUpdate();
     }
 }
