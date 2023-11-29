@@ -1,7 +1,8 @@
 package Geek.Blog.controller;
 
 import Geek.Blog.dto.CommentDTO;
-import Geek.Blog.dto.CommentResponseDTO;
+import Geek.Blog.dto.CommentEditDTO;
+import Geek.Blog.Response.CommentResponseDTO;
 import Geek.Blog.entity.Comment;
 import Geek.Blog.service.CommentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -59,7 +60,7 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public CommentResponseDTO editComment(@PathVariable("commentId") Long commentId, @RequestBody CommentDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public CommentResponseDTO editComment(@PathVariable("commentId") Long commentId, @RequestBody CommentEditDTO form) {  // @PathVariable 및 @RequestBody 사용
         Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getContents() == null || form.getContents().isBlank()) {
             throw new EntityNotFoundException("Invalid Input");

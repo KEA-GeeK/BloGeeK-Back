@@ -1,7 +1,8 @@
 package Geek.Blog.controller;
 
 import Geek.Blog.dto.PostDTO;
-import Geek.Blog.dto.PostResponseDTO;
+import Geek.Blog.Response.PostResponseDTO;
+import Geek.Blog.dto.PostEditDTO;
 import Geek.Blog.entity.Post;
 import Geek.Blog.service.PostService;
 import jakarta.persistence.EntityNotFoundException;
@@ -57,7 +58,7 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public PostResponseDTO editPost(@PathVariable Long postId, @RequestBody PostDTO form) {  // @PathVariable 및 @RequestBody 사용
+    public PostResponseDTO editPost(@PathVariable Long postId, @RequestBody PostEditDTO form) {  // @PathVariable 및 @RequestBody 사용
         Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
         if (form.getPost_title() == null || form.getContents() == null) {
             throw new EntityNotFoundException("Invalid Input");

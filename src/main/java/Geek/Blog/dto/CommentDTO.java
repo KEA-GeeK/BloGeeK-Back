@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDTO {
-    private Long comment_id = null;
     private String contents;
     private Long post_id;
     private Long author_id;

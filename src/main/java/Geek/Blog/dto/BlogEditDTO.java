@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyDTO {
-    private String contents;
-    private Long author_id;
-    private Long comment_id;
+public class BlogEditDTO {
+    private String blog_name;
+    private String about_blog;
+    private byte[] profilePicture;
 }
