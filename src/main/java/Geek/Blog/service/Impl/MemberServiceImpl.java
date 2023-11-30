@@ -4,6 +4,7 @@ import Geek.Blog.Response.SignInResponse;
 import Geek.Blog.dto.BlogDTO;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
+import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.entity.Member;
 import Geek.Blog.repository.BlogRepository;
 import Geek.Blog.repository.MemberRepository;
@@ -116,15 +117,15 @@ public class MemberServiceImpl implements MemberService {
     //회원가입
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String signUp(MemberDto requestDto) throws Exception {
-        log.info(requestDto.toString());
+    public String signUp(SignUpRequestDTO request) throws Exception {
+        log.info(request.toString());
 
-        if (memberRepository.findByAccount(requestDto.getEmail()).isPresent()) {
+        if (memberRepository.findByAccount(request.getEmail()).isPresent()) {
             throw new Exception("이미 가입된 이메일입니다.");
         }
 
-        Member member = memberRepository.save(new Member(requestDto));
-        member.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        Member member = memberRepository.save(new Member(request));
+        member.setPassword(passwordEncoder.encode(request.getPassword()));
         log.info("생성된 회원: " + member);
 
         BlogDTO blogDTO = new BlogDTO(member);

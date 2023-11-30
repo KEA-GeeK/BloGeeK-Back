@@ -1,6 +1,7 @@
 package Geek.Blog.entity;
 
 import Geek.Blog.dto.MemberDto;
+import Geek.Blog.dto.SignUpRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.slf4j.Logger;
@@ -72,7 +73,7 @@ public class Member {
     }
 
 
-    public Member(MemberDto memberDto){
+    public Member(SignUpRequestDTO memberDto){
         this.setEmail(memberDto.getEmail());
         this.setId(memberDto.getId());
         this.setAccount(memberDto.getAccount());
@@ -81,6 +82,6 @@ public class Member {
         this.setBirthday((memberDto.getBirthday()));
         this.setInterests(memberDto.getInterests());
         this.setRoles(memberDto.getRoles());
-        this.setToken(memberDto.getToken());
+        //this.setToken(memberDto.getToken());
     }
 }
