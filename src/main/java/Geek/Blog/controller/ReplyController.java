@@ -38,11 +38,23 @@ public class ReplyController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ReplyResponseDTO>> getReplyList(@PathVariable("commentId") Long commentId) {
-        List<Reply> replies = replyService.listRepliesOfComment(commentId);
-        List<ReplyResponseDTO> replyResponseDTOS = replies.stream().map(ReplyResponseDTO::new).collect(Collectors.toList());
+    public ResponseEntity<?> getReplyList(@PathVariable("commentId") Long commentId) {
+        try {
+            List<Reply> replies = replyService.listRepliesOfComment(commentId);
+            if (replies.isEmpty()){
+                throw new EntityNotFoundException("Comment not found with ID: " + commentId);
+            }
 
-        return ResponseEntity.ok(replyResponseDTOS);
+            List<ReplyResponseDTO> replyResponseDTOS = replies.stream()
+                    .map(ReplyResponseDTO::new) // Comment 객체를 CommentResponseDTO 객체로 변환
+                    .collect(Collectors.toList()); // 결과를 List로 수집
+
+            return ResponseEntity.ok(replyResponseDTOS);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
     }
 
     @GetMapping("/{replyId}")

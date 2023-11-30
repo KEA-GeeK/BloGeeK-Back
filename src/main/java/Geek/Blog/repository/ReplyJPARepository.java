@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,11 @@ public class ReplyJPARepository implements ReplyRepository{
 
     @Override
     public List<Reply> findCommentReply(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+
+        if (comment == null) {
+            return new ArrayList<>();
+        }
 
         Query query = em.createQuery("SELECT r FROM Reply r WHERE r.comment = :comment", Reply.class);
         query.setParameter("comment", comment);

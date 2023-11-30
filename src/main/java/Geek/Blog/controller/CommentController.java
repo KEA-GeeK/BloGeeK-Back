@@ -39,13 +39,23 @@ public class CommentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentList(@PathVariable("postId") Long postId) {
-        List<Comment> comments = commentservice.listCommentsOfPost(postId);
-        List<CommentResponseDTO> commentResponseDTOS = comments.stream()
-                .map(CommentResponseDTO::new) // Comment 객체를 CommentResponseDTO 객체로 변환
-                .collect(Collectors.toList()); // 결과를 List로 수집
+    public ResponseEntity<?> getCommentList(@PathVariable("postId") Long postId) {
+        try {
+            List<Comment> comments = commentservice.listCommentsOfPost(postId);
+            if (comments.isEmpty()){
+                throw new EntityNotFoundException("Post not found with ID: " + postId);
+            }
 
-        return ResponseEntity.ok(commentResponseDTOS);
+            List<CommentResponseDTO> commentResponseDTOS = comments.stream()
+                    .map(CommentResponseDTO::new) // Comment 객체를 CommentResponseDTO 객체로 변환
+                    .collect(Collectors.toList()); // 결과를 List로 수집
+
+            return ResponseEntity.ok(commentResponseDTOS);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
     }
 
     @GetMapping("/{commentId}")
