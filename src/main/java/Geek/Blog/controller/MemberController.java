@@ -4,6 +4,7 @@ import Geek.Blog.Response.SignInResponse;
 import Geek.Blog.Response.SignUpResponse;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
+import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.Impl.MemberServiceImpl;
 import Geek.Blog.service.Impl.TokenService;
@@ -43,7 +44,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<SignUpResponse> join(@RequestBody MemberDto request) {
+    public ResponseEntity<SignUpResponse> join(@RequestBody SignUpRequestDTO request) {
         try {
             // 회원가입 성공 시 성공 메시지를 받아옴
             String signUpResult = memberService.signUp(request);
@@ -81,34 +82,33 @@ public class MemberController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴 중 오류가 발생했습니다.");
 //        }
 //    }
+//
 
-@DeleteMapping("/withdraw")
-public ResponseEntity<String> withdraw(HttpServletRequest httpServletRequest) {
-    try {
-        log.info("회원탈퇴 요청");
+//    @DeleteMapping("/withdraw")
+//    public ResponseEntity<String> withdraw(@RequestHeader(name = "Authorization", required = false) String token) {
+//        try {
+//            log.info("회원탈퇴 요청");
+//
+//            if (token == null || !token.startsWith("Bearer ")) {
+//                throw new RuntimeException("유효한 토큰이 제공되지 않았습니다.");
+//            }
+//
+//            String accessToken = token.substring(7); // "Bearer " 이후의 토큰 값 추출
+//            log.info("토큰: " + accessToken);
+//
+//            Long userId = Long.parseLong(tokenService.extractUserId(accessToken)); // 토큰에서 사용자 식별자 추출
+//            log.info("사용자 식별자: " + userId);
+//
+//            // 반환값을 사용하지 않도록 수정
+//            memberService.withdraw(userId, accessToken);
+//
+//            return ResponseEntity.ok("회원 탈퇴가 성공적으로 처리되었습니다.");
+//        } catch (Exception e) {
+//            log.error("회원 탈퇴 중 오류 발생: {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴 중 오류가 발생했습니다.");
+//        }
+//    }
 
-        HttpSession session = httpServletRequest.getSession();
-        String accessToken = (String) session.getAttribute("accessToken");
-
-        log.info("Session Attribute - accessToken: {}", accessToken);
-
-        if (accessToken == null) {
-            throw new RuntimeException("세션에 유효한 토큰이 없습니다.");
-        }
-
-        Long userId = Long.parseLong(tokenService.extractUserId(accessToken));
-        memberService.withdraw(userId);
-
-        // 세션에서 토큰 제거
-        session.removeAttribute("accessToken");
-
-        return ResponseEntity.ok("회원 탈퇴가 성공적으로 처리되었습니다.");
-
-    } catch (Exception e) {
-        log.error("회원 탈퇴 중 오류 발생: {}", e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴 중 오류가 발생했습니다.");
-    }
-}
 
 //
 //    @GetMapping("/{id}")
