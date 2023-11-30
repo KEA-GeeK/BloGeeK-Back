@@ -35,8 +35,8 @@ public class ReplyService {
             return replyRepository.findById(replyId);
     }
 
-    public List<Reply> listReplies() {
-        return replyRepository.findAll();
+    public List<Reply> listRepliesOfComment(Long commentId) {
+        return replyRepository.findCommentReply(commentId);
     }
 
     public void editReply(Reply reply){

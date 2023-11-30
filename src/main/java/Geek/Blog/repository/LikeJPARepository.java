@@ -1,6 +1,7 @@
 package Geek.Blog.repository;
 
 import Geek.Blog.dto.LikeDTO;
+import Geek.Blog.entity.Comment;
 import Geek.Blog.entity.Like;
 import Geek.Blog.entity.Member;
 import Geek.Blog.entity.Post;
@@ -62,6 +63,18 @@ public class LikeJPARepository implements LikeRepository{
     @Override
     public List<Like> findAll() {
         return em.createQuery("SELECT l FROM Like l", Like.class).getResultList();
+    }
+
+    @Override
+    public List<Like> findPostLike(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+
+        Query query = em.createQuery("SELECT c FROM Comment c WHERE c.post = :post", Comment.class);
+        query.setParameter("post", post);
+
+        @SuppressWarnings("unchecked")
+        List<Like> result = query.getResultList();
+        return  result;
     }
 
     @Override

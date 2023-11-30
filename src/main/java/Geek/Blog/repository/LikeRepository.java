@@ -12,5 +12,7 @@ public interface LikeRepository {
 
     Optional<Like> findByPostMember(Long postId, Long memberId);
     List<Like> findAll();
+
+    List<Like> findPostLike(Long postId);
     Integer deleteById(Long id);
 }

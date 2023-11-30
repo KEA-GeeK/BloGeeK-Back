@@ -1,6 +1,7 @@
 package Geek.Blog.repository;
 
 import Geek.Blog.dto.ReplyDTO;
+import Geek.Blog.entity.Comment;
 import Geek.Blog.entity.Reply;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -45,6 +46,18 @@ public class ReplyJPARepository implements ReplyRepository{
     @Override
     public List<Reply> findAll() {
         return em.createQuery("SELECT r FROM Reply r", Reply.class).getResultList();
+    }
+
+    @Override
+    public List<Reply> findCommentReply(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException("Invaild Post."));
+
+        Query query = em.createQuery("SELECT r FROM Reply r WHERE r.comment = :comment", Reply.class);
+        query.setParameter("comment", comment);
+
+        @SuppressWarnings("unchecked")
+        List<Reply> result = query.getResultList();
+        return result;
     }
 
     @Override

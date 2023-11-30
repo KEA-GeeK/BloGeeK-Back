@@ -41,12 +41,7 @@ public class LikeService {
         }
     }
 
-
-    public Optional<Like> viewLike(Long likeId) {
-            return likeRepository.findById(likeId);
-    }
-
-    public List<Like> listLikes() {
-        return likeRepository.findAll();
+    public List<Like> listLikesOfPost(Long postId) {
+        return likeRepository.findPostLike(postId);
     }
 }

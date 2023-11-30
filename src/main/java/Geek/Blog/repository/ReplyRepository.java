@@ -10,6 +10,7 @@ public interface ReplyRepository {
     Reply upload(ReplyDTO replyDTO);
     Optional<Reply> findById(Long id);
     List<Reply> findAll();
+    List<Reply> findCommentReply(Long commentId);
     Reply edit(Reply reply);
     Integer deleteById(Long id);
 }
