@@ -2,6 +2,7 @@ package Geek.Blog.controller;
 
 import Geek.Blog.Response.ReplyResponseDTO;
 import Geek.Blog.dto.ReplyDTO;
+import Geek.Blog.dto.ReplyDeleteDTO;
 import Geek.Blog.dto.ReplyEditDTO;
 import Geek.Blog.entity.Reply;
 import Geek.Blog.service.ReplyService;
@@ -68,7 +69,7 @@ public class ReplyController {
 //    }
 
     @DeleteMapping("/{replyId}")
-    public ResponseEntity<String> deleteReply(@PathVariable Long replyId, @RequestBody ReplyDTO replyDTO) {
+    public ResponseEntity<String> deleteReply(@PathVariable Long replyId, @RequestBody ReplyDeleteDTO replyDTO) {
         try {
             Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
 

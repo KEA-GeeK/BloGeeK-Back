@@ -2,6 +2,7 @@ package Geek.Blog.controller;
 
 import Geek.Blog.Response.PostResponseDTO;
 import Geek.Blog.dto.PostDTO;
+import Geek.Blog.dto.PostDeleteDTO;
 import Geek.Blog.dto.PostEditDTO;
 import Geek.Blog.entity.Post;
 import Geek.Blog.service.PostService;
@@ -33,7 +34,7 @@ public class PostUserController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<String> deletePost(@PathVariable Long postId, @RequestBody PostDTO postDTO) {
+    public ResponseEntity<String> deletePost(@PathVariable Long postId, @RequestBody PostDeleteDTO postDTO) {
         try {
             Post post = postService.viewPost(postId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
 

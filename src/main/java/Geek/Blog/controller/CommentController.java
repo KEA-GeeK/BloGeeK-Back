@@ -2,6 +2,7 @@ package Geek.Blog.controller;
 
 import Geek.Blog.Response.CommentResponseDTO;
 import Geek.Blog.dto.CommentDTO;
+import Geek.Blog.dto.CommentDeleteDTO;
 import Geek.Blog.dto.CommentEditDTO;
 import Geek.Blog.entity.Comment;
 import Geek.Blog.service.CommentService;
@@ -71,7 +72,7 @@ public class CommentController {
 //    }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestBody CommentDeleteDTO commentDTO) {
         try {
             Comment comment = commentService.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
 
