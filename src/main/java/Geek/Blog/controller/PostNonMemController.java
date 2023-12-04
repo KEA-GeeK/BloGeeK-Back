@@ -26,10 +26,29 @@ public class PostNonMemController {
         this.postService = postService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getPostList() {
+    @GetMapping("/list/all")
+    public ResponseEntity<?> getAPostList() {
         try {
             List<Post> posts = postService.listPosts();
+
+            if (posts == null) {
+                throw new EntityNotFoundException("게시글이 존재하지 않습니다.");
+            }
+
+            List<PostResponseDTO> postResponseDTOs = posts.stream().map(PostResponseDTO::new).collect(Collectors.toList());
+
+            return ResponseEntity.ok(postResponseDTOs);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
+    }
+
+    @GetMapping("/list/{categoryId}")
+    public ResponseEntity<?> getPostList(@PathVariable Long categoryId) {
+        try {
+            List<Post> posts = postService.listPostsByCategory();
 
             if (posts == null) {
                 throw new EntityNotFoundException("게시글이 존재하지 않습니다.");

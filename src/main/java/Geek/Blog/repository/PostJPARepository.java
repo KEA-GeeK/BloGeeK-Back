@@ -56,6 +56,12 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
+    public List<Post> findCategoryPost() {
+        //TODO 카테고리 내 게시글 찾기
+        return em.createQuery("SELECT p FROM Post p", Post.class).getResultList();
+    }
+
+    @Override
     public Post edit(Post post) {
         Query query =  em.createQuery("UPDATE Post p SET p.post_title = :newTitle, p.contents = :newContent WHERE p.post_id = :id");
         query.setParameter("newTitle", post.getPost_title());

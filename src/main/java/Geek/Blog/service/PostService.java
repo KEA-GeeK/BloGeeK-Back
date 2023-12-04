@@ -33,6 +33,9 @@ public class PostService {
     public List<Post> listPosts() {
         return postRepository.findAll();
     }
+    public List<Post> listPostsByCategory() {
+        return postRepository.findCategoryPost();
+    }
 
     public void editPost(Post post){
         postRepository.edit(post);
