@@ -12,5 +12,5 @@ import lombok.Setter;
 public class CommentDTO {
     private String contents;
     private Long post_id;
-    private Long author_id;
+    private Long claimer_id;
 }

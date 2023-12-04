@@ -57,4 +57,12 @@ public class BlogJPARepository implements BlogRepository{
         query.executeUpdate();
         return blog;
     }
+
+    @Override
+    public Integer deleteById(Long id) {
+        Query query = em.createQuery("DELETE FROM Blog b WHERE b.blog_id = :id");
+        query.setParameter("id", id);
+
+        return query.executeUpdate();
+    }
 }

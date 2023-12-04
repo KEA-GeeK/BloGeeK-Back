@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostEditDTO {
+    private Long claimer_id;
     private String post_title;
     private String contents;
 }

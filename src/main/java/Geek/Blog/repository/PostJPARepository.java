@@ -22,16 +22,19 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public Post upload(PostDTO postDTO) {
-        Post post = new Post();
-        post.setPost_title(postDTO.getPost_title());
-        post.setContents(postDTO.getContents());
-        post.setAuthor(memberRepository.findById(postDTO.getAuthor_id())
-                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + postDTO.getAuthor_id())));
+    public Optional<Post> upload(PostDTO postDTO) {
+        try {
+            Post post = new Post();
+            post.setPost_title(postDTO.getPost_title());
+            post.setContents(postDTO.getContents());
+            post.setAuthor(memberRepository.findById(postDTO.getClaimer_id())
+                    .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + postDTO.getClaimer_id())));
 
-        em.persist(post);
-
-        return post;
+            em.persist(post);
+            return Optional.of(post);
+        }catch(EntityNotFoundException e){
+            return Optional.empty();
+        }
     }
 
     @Override

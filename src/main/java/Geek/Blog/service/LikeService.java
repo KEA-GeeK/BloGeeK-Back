@@ -23,7 +23,7 @@ public class LikeService {
     public Like addLike(LikeDTO likeDTO) {
         try {
             Like like;
-            Optional<Like> result = likeRepository.findByPostMember(likeDTO.getPost_id(), likeDTO.getMember_id());
+            Optional<Like> result = likeRepository.findByPostMember(likeDTO.getPost_id(), likeDTO.getClaimer_id());
 
             if (result.isPresent()) {
                 like = result.get();

@@ -33,8 +33,8 @@ public class LikeJPARepository implements LikeRepository{
         Like like = new Like();
         like.setPost(postRepository.findById(likeDTO.getPost_id())
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + likeDTO.getPost_id())));
-        like.setMember(memberRepository.findById(likeDTO.getMember_id())
-                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + likeDTO.getMember_id())));
+        like.setMember(memberRepository.findById(likeDTO.getClaimer_id())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + likeDTO.getClaimer_id())));
 
         return like;
     }

@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReplyDTO {
     private String contents;
-    private Long author_id;
+    private Long claimer_id;
     private Long comment_id;
 }

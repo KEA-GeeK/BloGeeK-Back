@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogEditDTO {
+    private Long claimer_id;
     private String blog_name;
     private String about_blog;
     private byte[] profilePicture;

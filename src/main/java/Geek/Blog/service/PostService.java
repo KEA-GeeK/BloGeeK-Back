@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//TODO DB에서 받아온 데이터가 유효한지 try catch
 @Transactional
 @Service
 public class PostService {
@@ -23,13 +22,8 @@ public class PostService {
     /**
      * 기능
      **/
-    public Post upload(PostDTO postDTO) {
-        try {
-            Post post = postRepository.upload(postDTO);
-            return post;
-        } catch (Exception e) {
-            return null;
-        }
+    public Optional<Post> upload(PostDTO postDTO) {
+        return postRepository.upload(postDTO);
     }
 
     public Optional<Post> viewPost(Long postId) {

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{postId}/like")
+@RequestMapping("/api/user/like")
 public class LikeController {
 
     private final LikeService likeService;
@@ -24,8 +24,7 @@ public class LikeController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createLike(@PathVariable Long postId, @RequestBody LikeDTO likeDTO) {
-        likeDTO.setPost_id(postId);
+    public ResponseEntity<?> createLike(@RequestBody LikeDTO likeDTO) {
         Like like = likeService.addLike(likeDTO);
 
         if (like == null) {
@@ -35,7 +34,7 @@ public class LikeController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/list/{postId}")
     public ResponseEntity<?> getLikeList(@PathVariable Long postId) {
         try {
             List<Like> likes = likeService.listLikesOfPost(postId);
@@ -44,11 +43,11 @@ public class LikeController {
                 throw new EntityNotFoundException("Post not found with ID: " + postId);
             }
 
-            List<LikeDTO> likeDTOS = likes.stream()
+            List<LikeDTO> likeDTOs = likes.stream()
                     .map(LikeDTO::new) // Like 객체를 LikeDTO 객체로 변환
                     .collect(Collectors.toList()); // 결과를 List로 수집
 
-            return ResponseEntity.ok(likeDTOS);
+            return ResponseEntity.ok(likeDTOs);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {

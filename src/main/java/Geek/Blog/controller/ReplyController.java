@@ -12,10 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{commentId}/reply")
+@RequestMapping("/api/user/reply")
 public class ReplyController {
 
     private final ReplyService replyService;
@@ -26,8 +27,7 @@ public class ReplyController {
     }
 
     @PostMapping("/write")
-    public ResponseEntity<?> createReply(@PathVariable("commentId") Long commentId, @RequestBody ReplyDTO replyDTO) {
-        replyDTO.setComment_id(commentId);
+    public ResponseEntity<?> createReply(@RequestBody ReplyDTO replyDTO) {
         Reply reply = replyService.upload(replyDTO);
 
         if (reply == null) {
@@ -37,7 +37,7 @@ public class ReplyController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/list/{commentId}")
     public ResponseEntity<?> getReplyList(@PathVariable("commentId") Long commentId) {
         try {
             List<Reply> replies = replyService.listRepliesOfComment(commentId);
@@ -57,22 +57,30 @@ public class ReplyController {
         }
     }
 
-    @GetMapping("/{replyId}")
-    public ResponseEntity<?> viewReply(@PathVariable Long replyId) {
-        try {
-            Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
-            return ResponseEntity.ok(new ReplyResponseDTO(reply));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
+//    @GetMapping("/{replyId}")
+//    public ResponseEntity<?> viewReply(@PathVariable Long replyId) {
+//        try {
+//            Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
+//            return ResponseEntity.ok(new ReplyResponseDTO(reply));
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
 
     @DeleteMapping("/{replyId}")
-    public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
+    public ResponseEntity<String> deleteReply(@PathVariable Long replyId, @RequestBody ReplyDTO replyDTO) {
         try {
             Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
-            replyService.deleteReply(reply);
-            return ResponseEntity.ok("Deleted successfully");
+
+            if (Objects.equals(replyDTO.getClaimer_id(), reply.getAuthor().getId())){
+                replyService.deleteReply(reply);
+                return ResponseEntity.ok("Deleted successfully");
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Denied");
+            }
+
+
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reply not found with ID: " + replyId);
         }
@@ -82,13 +90,19 @@ public class ReplyController {
     public ResponseEntity<?> editReply(@PathVariable Long replyId, @RequestBody ReplyEditDTO form) {
         try {
             Reply reply = replyService.viewReply(replyId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
+
             if (form.getContents() == null || form.getContents().isBlank()) {
                 return ResponseEntity.badRequest().body("Invalid input");
             }
 
-            reply.setContents(form.getContents());
-            replyService.editReply(reply);
-            return ResponseEntity.ok(new ReplyResponseDTO(reply));
+            if (Objects.equals(form.getClaimer_id(), reply.getAuthor().getId())){
+                reply.setContents(form.getContents());
+                replyService.editReply(reply);
+                return ResponseEntity.ok(new ReplyResponseDTO(reply));
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Edit Denied");
+            }
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reply not found with ID: " + replyId);
         }

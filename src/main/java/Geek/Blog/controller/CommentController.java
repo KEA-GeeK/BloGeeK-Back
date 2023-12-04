@@ -12,24 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{postId}/comment")
+@RequestMapping("/api/user/comment")
 public class CommentController {
 
-    private final CommentService commentservice;
+    private final CommentService commentService;
 
     @Autowired
     public CommentController(CommentService commentService) {
-        this.commentservice = commentService;
+        this.commentService = commentService;
     }
 
 
     @PostMapping("/write")
-    public ResponseEntity<Object> createComment(@PathVariable("postId") Long postId, @RequestBody CommentDTO commentDTO) {
-        commentDTO.setPost_id(postId);
-        Comment comment = commentservice.upload(commentDTO);
+    public ResponseEntity<Object> createComment(@RequestBody CommentDTO commentDTO) {
+
+        commentDTO.setPost_id(commentDTO.getPost_id());
+        Comment comment = commentService.upload(commentDTO);
 
         if (comment == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -38,10 +40,10 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/list/{postId}")
     public ResponseEntity<?> getCommentList(@PathVariable("postId") Long postId) {
         try {
-            List<Comment> comments = commentservice.listCommentsOfPost(postId);
+            List<Comment> comments = commentService.listCommentsOfPost(postId);
             if (comments.isEmpty()){
                 throw new EntityNotFoundException("Post not found with ID: " + postId);
             }
@@ -58,22 +60,29 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/{commentId}")
-    public ResponseEntity<?> viewComment(@PathVariable("commentId") Long commentId) {
-        try {
-            Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + commentId));
-            return ResponseEntity.ok(new CommentResponseDTO(comment));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
+//    @GetMapping("/{commentId}")
+//    public ResponseEntity<?> viewComment(@PathVariable("commentId") Long commentId) {
+//        try {
+//            Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Post not found with ID: " + commentId));
+//            return ResponseEntity.ok(new CommentResponseDTO(comment));
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable("commentId") Long commentId) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
         try {
-            Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
-            commentservice.deleteComment(comment);
-            return ResponseEntity.ok("Deleted successfully");
+            Comment comment = commentService.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
+
+            if (Objects.equals(commentDTO.getClaimer_id(), comment.getAuthor().getId())){
+                commentService.deleteComment(comment);
+                return ResponseEntity.ok("Deleted successfully");
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Denied");
+            }
+
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found with ID: " + commentId);
         }
@@ -82,14 +91,19 @@ public class CommentController {
     @PatchMapping("/{commentId}")
     public ResponseEntity<?> editComment(@PathVariable("commentId") Long commentId, @RequestBody CommentEditDTO form) {  // @PathVariable 및 @RequestBody 사용
         try {
-            Comment comment = commentservice.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
+            Comment comment = commentService.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
             if (form.getContents() == null || form.getContents().isBlank()) {
                 throw new EntityNotFoundException("Invalid Input");
             }
 
-            comment.setContents(form.getContents());
-            commentservice.editComment(comment);
-            return ResponseEntity.ok(new CommentResponseDTO(comment));
+            if (Objects.equals(form.getClaimer_id(), comment.getAuthor().getId())){
+                comment.setContents(form.getContents());
+                commentService.editComment(comment);
+                return ResponseEntity.ok(new CommentResponseDTO(comment));
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Edit Denied");
+            }
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found with ID: " + commentId);
         }

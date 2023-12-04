@@ -10,5 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReplyEditDTO {
+    private Long claimer_id;
     private String contents;
 }

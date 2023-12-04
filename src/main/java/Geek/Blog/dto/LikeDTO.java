@@ -13,12 +13,12 @@ import lombok.Setter;
 public class LikeDTO {
     private Long like_id = null;
     private Long post_id;
-    private Long member_id;
+    private Long claimer_id;
 
     /** LikeRequestDTO 겸용 **/
     public LikeDTO(Like like) {
         like_id = like.getLike_id();
         post_id = like.getPost().getPost_id();
-        member_id = like.getMember().getId();
+        claimer_id = like.getMember().getId();
     }
 }

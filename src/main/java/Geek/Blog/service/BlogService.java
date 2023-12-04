@@ -32,4 +32,8 @@ public class BlogService {
         Blog blog = blogRepository.create(blogDTO);
         return blog;
     }
+
+    public void deleteBlog(Blog blog){
+        blogRepository.deleteById(blog.getBlog_id());
+    }
 }

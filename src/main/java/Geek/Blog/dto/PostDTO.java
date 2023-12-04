@@ -12,6 +12,6 @@ import lombok.Setter;
 public class PostDTO {
     private String post_title;
     private String contents;
-    private Long author_id;
+    private Long claimer_id;
     private Long category_id;
 }
