@@ -23,7 +23,7 @@ public class LikeController {
         this.likeService = likeService;
     }
 
-    @PostMapping("/")
+    @PostMapping("/{postId}")
     public ResponseEntity<?> createLike(@RequestBody LikeDTO likeDTO) {
         Like like = likeService.addLike(likeDTO);
 

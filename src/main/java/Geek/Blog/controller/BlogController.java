@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/blog")
+@RequestMapping("/api/user/blog")
 public class BlogController {
 
     private final BlogService blogService;
