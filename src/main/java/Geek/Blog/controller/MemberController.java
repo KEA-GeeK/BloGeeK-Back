@@ -5,9 +5,11 @@ import Geek.Blog.Response.SignUpResponse;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.dto.SignUpRequestDTO;
+import Geek.Blog.entity.Member;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.Impl.MemberServiceImpl;
 import Geek.Blog.service.Impl.TokenService;
+import Geek.Blog.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.Optional;
 
 
 @Slf4j
@@ -29,6 +32,9 @@ public class MemberController {
 
     private final MemberServiceImpl memberService;
     private final TokenService tokenService;
+    private MemberRepository memberRepository;
+    private JwtTokenProvider jwtTokenProvider;
+
 
     @Autowired // 이 어노테이션을 추가
     public MemberController(MemberServiceImpl memberService, TokenService tokenService) {
@@ -56,6 +62,27 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new SignUpResponse("Error during sign-up: " + e.getMessage()));
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        // Perform logout logic (invalidate token, etc.)
+        return ResponseEntity.ok("Logout successful");
+    }
+
+    @PostMapping("/delete_account")
+    public ResponseEntity<String> deleteAccount(@RequestHeader("Authorization") String token) {
+        try {
+            String userId = jwtTokenProvider.extractIdx(token);
+            Long parsedUserId = Long.parseLong(userId);
+            memberService.withdraw(parsedUserId);
+            return ResponseEntity.ok("Account deleted");
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user ID format");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting account");
+        }
+    }
+
 
 //    @DeleteMapping("/withdraw")
 //    public ResponseEntity<String> withdraw(@RequestHeader(name = "Authorization", required = false) String token) {

@@ -24,7 +24,6 @@ import java.util.Set;
 public class Member {
     private static final Logger log = LoggerFactory.getLogger(Member.class);
 
-
     @Column(unique = true, length = 45)
     private String email;
 
@@ -54,13 +53,12 @@ public class Member {
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
 
-    //@Column(columnDefinition = "TEXT")
     @Column(length=500)
     private String token;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
-    private Blog blog;
-
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true)
+//    private Blog blog;
+//
 
     private void setRoles(List<Authority> role){
         this.roles = role;

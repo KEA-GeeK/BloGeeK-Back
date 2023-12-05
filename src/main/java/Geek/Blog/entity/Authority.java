@@ -21,7 +21,7 @@ public class Authority {
     @Enumerated(EnumType.STRING) // Enum의 문자열을 사용하도록 지정
     private Role name;
 
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Member member;

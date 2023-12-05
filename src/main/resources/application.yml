@@ -10,22 +10,33 @@ server:
     whitelabel:
       enabled: false
     include-stacktrace: always
+#
+#spring:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    #url: jdbc:mariadb://172.16.211.49:3306/GeekBlog?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&createDatabaseIfNotExist=true
+#    #username: root
+#    #password: qwer1234!
+#    url: jdbc:mariadb://memberfollow-db.cne10fapbpfh.us-east-1.rds.amazonaws.com:3306/db_member_follow
+#    username: admin
+#    password: qwer1234
+#  jpa:
+#    hibernate:
+#     ddl-auto: create
+#  properties:
+#    hibernate:
+#      format_sql: true
+#      show-sql: true
 
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://172.16.211.49:3306/GeekBlog?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&createDatabaseIfNotExist=true
-    username: root
-    password: qwer1234!
-
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
+    url: jdbc:mariadb://memberfollow-db.cne10fapbpfh.us-east-1.rds.amazonaws.com:3306/db_member_follow
+    username: admin
+    password: qwer1234
   jpa:
-
     hibernate:
       ddl-auto: create
-
     properties:
       hibernate:
         format_sql: true
@@ -33,6 +44,8 @@ spring:
 
 logging:
   level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org:
       springframework:
         web=DEBUG:

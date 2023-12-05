@@ -127,9 +127,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.save(new Member(request));
         member.setPassword(passwordEncoder.encode(request.getPassword()));
         log.info("생성된 회원: " + member);
-
-        BlogDTO blogDTO = new BlogDTO(member);
-        blogRepository.create(blogDTO);
+//
+//        BlogDTO blogDTO = new BlogDTO(member);
+//        blogRepository.create(blogDTO);
 
         // 회원가입 후, 회원의 토큰를 반환
         //return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
@@ -142,8 +142,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             log.info("사용자 정보: " + userId);
             // 반환값을 사용하지 않도록 수정
-            memberRepository.deleteById(userId);
 
+            memberRepository.deleteById(userId);
         } catch (Exception e) {
             log.error("회원 탈퇴 중 오류 발생: {}", e.getMessage());
             throw e;
