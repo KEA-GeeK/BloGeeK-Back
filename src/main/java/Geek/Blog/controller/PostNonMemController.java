@@ -1,6 +1,6 @@
 package Geek.Blog.controller;
 
-import Geek.Blog.Response.PostResponseDTO;
+import Geek.Blog.dto.PostResponseDTO;
 import Geek.Blog.entity.Post;
 import Geek.Blog.service.PostService;
 import jakarta.persistence.EntityNotFoundException;

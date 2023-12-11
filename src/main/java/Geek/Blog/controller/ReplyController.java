@@ -1,6 +1,6 @@
 package Geek.Blog.controller;
 
-import Geek.Blog.Response.ReplyResponseDTO;
+import Geek.Blog.dto.ReplyResponseDTO;
 import Geek.Blog.dto.ReplyDTO;
 import Geek.Blog.dto.ReplyDeleteDTO;
 import Geek.Blog.dto.ReplyEditDTO;

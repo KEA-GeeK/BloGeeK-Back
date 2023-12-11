@@ -1,4 +1,4 @@
-package Geek.Blog.Response;
+package Geek.Blog.dto;
 
 import Geek.Blog.entity.Post;
 import lombok.AllArgsConstructor;
