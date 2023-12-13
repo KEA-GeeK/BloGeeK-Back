@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface PostRepository {
     Optional<Post> upload(PostDTO postDTO);
     Optional<Post> findById(Long id);
-    Optional<Post> findByTitle(String title);
     List<Post> findAll();
     List<Post> findCategoryPost(Category category);
 

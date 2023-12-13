@@ -45,13 +45,6 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public Optional<Post> findByTitle(String title) {
-        List<Post> result = em.createQuery("select p from Post p where p.post_title = :title", Post.class)
-                .setParameter("title", title).getResultList();
-        return result.stream().findAny();
-    }
-
-    @Override
     public List<Post> findAll() {
         return em.createQuery("SELECT p FROM Post p", Post.class).getResultList();
     }
