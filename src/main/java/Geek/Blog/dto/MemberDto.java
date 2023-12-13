@@ -25,6 +25,5 @@ public class MemberDto { //회원 정보를 필드로 정의
     private Set<Interest> interests;
     private List<Authority> roles = new ArrayList<>();
     private String token;
-    private Blog blog;
 }
 //MemberDto Class`

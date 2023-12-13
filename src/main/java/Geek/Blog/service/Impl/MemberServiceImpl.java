@@ -1,12 +1,10 @@
 package Geek.Blog.service.Impl;
 
 import Geek.Blog.Response.SignInResponse;
-import Geek.Blog.dto.BlogDTO;
 import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.entity.Member;
-import Geek.Blog.repository.BlogRepository;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.MemberService;
 import Geek.Blog.util.JwtTokenProvider;
@@ -32,7 +30,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final BlogRepository blogRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
