@@ -1,7 +1,6 @@
 package Geek.Blog.service;
 
 import Geek.Blog.dto.PostDTO;
-import Geek.Blog.entity.Category;
 import Geek.Blog.entity.Post;
 import Geek.Blog.repository.PostRepository;
 import jakarta.transaction.Transactional;
@@ -34,8 +33,8 @@ public class PostService {
     public List<Post> listPosts() {
         return postRepository.findAll();
     }
-    public List<Post> listPostsByCategory(Category category) {
-        return postRepository.findCategoryPost(category);
+    public List<Post> listPostsByCategory() {
+        return postRepository.findCategoryPost();
     }
 
     public void editPost(Post post){

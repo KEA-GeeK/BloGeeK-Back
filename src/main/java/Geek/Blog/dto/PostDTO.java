@@ -1,6 +1,5 @@
 package Geek.Blog.dto;
 
-import Geek.Blog.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +13,5 @@ public class PostDTO {
     private String post_title;
     private String contents;
     private Long claimer_id;
-    private Category category;
+    private Long category_id;
 }

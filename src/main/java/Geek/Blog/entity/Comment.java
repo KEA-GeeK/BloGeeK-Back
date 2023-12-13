@@ -36,8 +36,4 @@ public class Comment {
 
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
-
-    private Boolean unsmile;
-
-    private Sentiment sentiment;
 }

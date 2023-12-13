@@ -1,7 +1,6 @@
 package Geek.Blog.controller;
 
-import Geek.Blog.dto.PostResponseDTO;
-import Geek.Blog.entity.Category;
+import Geek.Blog.Response.PostResponseDTO;
 import Geek.Blog.entity.Post;
 import Geek.Blog.service.PostService;
 import jakarta.persistence.EntityNotFoundException;
@@ -47,14 +46,10 @@ public class PostNonMemController {
     }
 
     @GetMapping("/list/{categoryId}")
-    public ResponseEntity<?> getPostList(@PathVariable int categoryId) {
+    public ResponseEntity<?> getPostList(@PathVariable Long categoryId) {
         try {
-            Category category = Category.getNameById(categoryId);
-            if (category == null){
-                throw new EntityNotFoundException("해당 카테고리가 존재하지 않습니다.");
-            }
+            List<Post> posts = postService.listPostsByCategory();
 
-            List<Post> posts = postService.listPostsByCategory(category);
             if (posts == null) {
                 throw new EntityNotFoundException("게시글이 존재하지 않습니다.");
             }
