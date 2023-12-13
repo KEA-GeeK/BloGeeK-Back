@@ -1,6 +1,7 @@
 package Geek.Blog.repository;
 
 import Geek.Blog.dto.CommentDTO;
+import Geek.Blog.dto.CommentSentimentDTO;
 import Geek.Blog.entity.Comment;
 import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
@@ -57,6 +58,10 @@ public class CommentJPARepository implements CommentRepository{
         @SuppressWarnings("unchecked")
         List<Comment> result = query.getResultList();
         return  result;
+    }
+
+    public CommentSentimentDTO checkCommentStyle(){ //DL로 요청 보내기
+        return null;
     }
 
     @Override
