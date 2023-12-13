@@ -1,5 +1,6 @@
 package Geek.Blog.dto;
 
+import Geek.Blog.entity.Category;
 import Geek.Blog.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class PostResponseDTO {
     private Long author_id;
     private LocalDateTime create_at;
     private LocalDateTime last_modified;
-    private Long category_id;
+    private Category category;
 
     public PostResponseDTO(Post post) {
         post_id = post.getPost_id();
@@ -28,6 +29,6 @@ public class PostResponseDTO {
         author_id = post.getAuthor().getId();
         create_at = post.getCreate_at();
         last_modified = post.getLast_modified();
-        category_id = post.getCategory_id();
+        category = post.getCategory();
     }
 }
