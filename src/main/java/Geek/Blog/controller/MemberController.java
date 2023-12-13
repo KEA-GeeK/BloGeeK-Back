@@ -2,23 +2,15 @@ package Geek.Blog.controller;
 
 import Geek.Blog.Response.SignInResponse;
 import Geek.Blog.Response.SignUpResponse;
-import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.dto.SignUpRequestDTO;
-import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.Impl.MemberServiceImpl;
 import Geek.Blog.service.Impl.TokenService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
 
 
 @Slf4j

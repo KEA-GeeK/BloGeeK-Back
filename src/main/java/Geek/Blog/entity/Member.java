@@ -1,6 +1,5 @@
 package Geek.Blog.entity;
 
-import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignUpRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;

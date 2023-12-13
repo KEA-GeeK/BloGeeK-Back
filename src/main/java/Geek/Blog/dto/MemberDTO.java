@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-public class MemberDto { //회원 정보를 필드로 정의
+public class MemberDTO { //회원 정보를 필드로 정의
     private String email;
     private Long id;
     private String account;

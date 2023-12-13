@@ -2,7 +2,6 @@ package Geek.Blog.service.Impl;
 
 import Geek.Blog.Response.SignInResponse;
 import Geek.Blog.dto.BlogDTO;
-import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.entity.Member;

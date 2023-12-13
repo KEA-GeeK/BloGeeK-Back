@@ -51,7 +51,6 @@ public class PostJPARepository implements PostRepository{
 
     @Override
     public List<Post> findCategoryPost(Category category) {
-        //TODO 카테고리 내 게시글 찾기
         return em.createQuery("SELECT p FROM Post p WHERE p.category = :category", Post.class)
                 .setParameter("category", category).getResultList();
     }
