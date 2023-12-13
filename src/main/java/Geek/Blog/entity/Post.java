@@ -36,5 +36,5 @@ public class Post {
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
 
-    private Long category_id;
+    private Category category;
 }

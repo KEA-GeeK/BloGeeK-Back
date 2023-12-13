@@ -1,6 +1,7 @@
 package Geek.Blog.repository;
 
 import Geek.Blog.dto.PostDTO;
+import Geek.Blog.entity.Category;
 import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -56,9 +57,10 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public List<Post> findCategoryPost() {
+    public List<Post> findCategoryPost(Category category) {
         //TODO 카테고리 내 게시글 찾기
-        return em.createQuery("SELECT p FROM Post p", Post.class).getResultList();
+        return em.createQuery("SELECT p FROM Post p WHERE p.category = :category", Post.class)
+                .setParameter("category", category).getResultList();
     }
 
     @Override
