@@ -36,5 +36,6 @@ public class Post {
     @Column(nullable = false) @UpdateTimestamp
     private LocalDateTime last_modified;
 
-    private Long category_id;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 }

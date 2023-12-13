@@ -1,6 +1,7 @@
 package Geek.Blog.repository;
 
 import Geek.Blog.dto.PostDTO;
+import Geek.Blog.entity.Category;
 import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +30,7 @@ public class PostJPARepository implements PostRepository{
             post.setContents(postDTO.getContents());
             post.setAuthor(memberRepository.findById(postDTO.getClaimer_id())
                     .orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + postDTO.getClaimer_id())));
+            post.setCategory(postDTO.getCategory());
 
             em.persist(post);
             return Optional.of(post);
@@ -44,21 +46,15 @@ public class PostJPARepository implements PostRepository{
     }
 
     @Override
-    public Optional<Post> findByTitle(String title) {
-        List<Post> result = em.createQuery("select p from Post p where p.post_title = :title", Post.class)
-                .setParameter("title", title).getResultList();
-        return result.stream().findAny();
-    }
-
-    @Override
     public List<Post> findAll() {
         return em.createQuery("SELECT p FROM Post p", Post.class).getResultList();
     }
 
     @Override
-    public List<Post> findCategoryPost() {
+    public List<Post> findCategoryPost(Category category) {
         //TODO 카테고리 내 게시글 찾기
-        return em.createQuery("SELECT p FROM Post p", Post.class).getResultList();
+        return em.createQuery("SELECT p FROM Post p WHERE p.category = :category", Post.class)
+                .setParameter("category", category).getResultList();
     }
 
     @Override
