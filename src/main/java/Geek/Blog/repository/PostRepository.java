@@ -12,6 +12,7 @@ public interface PostRepository {
     Optional<Post> findById(Long id);
     List<Post> findAll();
     List<Post> findCategoryPost(Category category);
+    List<Post> findMemberPost(Long memberId);
 
     Post edit(Post post);
     Integer deleteById(Long id);

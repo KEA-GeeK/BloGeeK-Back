@@ -35,7 +35,7 @@ public class CommentController {
         Comment comment = commentService.upload(commentDTO);
 
         if (comment == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업로드를 실패했습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(new CommentResponseDTO(comment));
         }
@@ -46,7 +46,7 @@ public class CommentController {
         try {
             List<Comment> comments = commentService.listCommentsOfPost(postId);
             if (comments.isEmpty()){
-                throw new EntityNotFoundException("Post not found with ID: " + postId);
+                throw new EntityNotFoundException("Comment not found with PostID: " + postId);
             }
 
             List<CommentResponseDTO> commentResponseDTOS = comments.stream()
@@ -73,19 +73,17 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestBody CommentDeleteDTO commentDTO) {
-        try {
+        try{
             Comment comment = commentService.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
 
-            if (Objects.equals(commentDTO.getClaimer_id(), comment.getAuthor().getId())){
+            if (Objects.equals(commentDTO.getClaimer_id(), comment.getAuthor().getId())) {
                 commentService.deleteComment(comment);
                 return ResponseEntity.ok("Deleted successfully");
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Denied");
             }
-
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found with ID: " + commentId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found with ID: " + commentId);
         }
     }
 
@@ -94,7 +92,7 @@ public class CommentController {
         try {
             Comment comment = commentService.viewComment(commentId).orElseThrow(() -> new EntityNotFoundException("Invalid ID"));
             if (form.getContents() == null || form.getContents().isBlank()) {
-                throw new EntityNotFoundException("Invalid Input");
+                return ResponseEntity.badRequest().body("Invalid input");
             }
 
             if (Objects.equals(form.getClaimer_id(), comment.getAuthor().getId())){
@@ -106,7 +104,7 @@ public class CommentController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Edit Denied");
             }
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found with ID: " + commentId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found with ID: " + commentId);
         }
     }
 }

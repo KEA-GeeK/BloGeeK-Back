@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ReplyResponseDTO {
     private Long reply_id = null;
     private String contents;
-    private Long author_id;
+    private String author;
     private Long comment_id;
     private LocalDateTime create_at;
     private LocalDateTime last_modified;
@@ -23,7 +23,7 @@ public class ReplyResponseDTO {
     public ReplyResponseDTO(Reply reply) {
         reply_id = reply.getReply_id();
         contents = reply.getContents();
-        author_id = reply.getAuthor().getId();
+        author = reply.getAuthor().getAccount();
         comment_id = reply.getComment().getComment_id();
         create_at = reply.getCreate_at();
         last_modified = reply.getLast_modified();

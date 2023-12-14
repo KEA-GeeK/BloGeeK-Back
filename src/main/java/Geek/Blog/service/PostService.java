@@ -37,6 +37,9 @@ public class PostService {
     public List<Post> listPostsByCategory(Category category) {
         return postRepository.findCategoryPost(category);
     }
+    public List<Post> listPostsByMember(Long memberId) {
+        return postRepository.findMemberPost(memberId);
+    }
 
     public void editPost(Post post){
         postRepository.edit(post);

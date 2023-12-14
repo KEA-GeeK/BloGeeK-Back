@@ -17,7 +17,7 @@ public class PostResponseDTO {
     private Long post_id = null;
     private String post_title;
     private String contents;
-    private Long author_id;
+    private String author;
     private LocalDateTime create_at;
     private LocalDateTime last_modified;
     private Category category;
@@ -26,7 +26,7 @@ public class PostResponseDTO {
         post_id = post.getPost_id();
         post_title = post.getPost_title();
         contents = post.getContents();
-        author_id = post.getAuthor().getId();
+        author = post.getAuthor().getAccount();
         create_at = post.getCreate_at();
         last_modified = post.getLast_modified();
         category = post.getCategory();

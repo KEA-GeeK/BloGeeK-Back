@@ -48,13 +48,11 @@ public class BlogController {
                 return ResponseEntity.ok(new BlogDTO(blog));
             }
             else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Delete Denied");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Edit Denied");
             }
 
-
-
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found with ID: " + blogId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Blog not found with ID: " + blogId);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

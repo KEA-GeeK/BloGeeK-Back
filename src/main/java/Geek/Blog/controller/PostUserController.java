@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/user/posts")
 public class PostUserController {
@@ -31,6 +34,26 @@ public class PostUserController {
 
         //post가 있으면 postResponseDTO를 반환, 없으면 에러메세지를 반환
         return post.<ResponseEntity<Object>>map(value -> ResponseEntity.status(HttpStatus.CREATED).body(new PostResponseDTO(value))).orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업로드를 실패했습니다."));
+    }
+
+    @GetMapping("/list/{memberId}")
+    public ResponseEntity<?> getPostList(@PathVariable Long memberId) {
+        try {
+            List<Post> posts = postService.listPostsByMember(memberId);
+            if (posts.isEmpty()){
+                throw new EntityNotFoundException("Post not found with MemberID: " + memberId);
+            }
+
+            List<PostResponseDTO> postResponseDTOS = posts.stream()
+                    .map(PostResponseDTO::new) // Comment 객체를 CommentResponseDTO 객체로 변환
+                    .collect(Collectors.toList()); // 결과를 List로 수집
+
+            return ResponseEntity.ok(postResponseDTOS);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
     }
 
     @DeleteMapping("/{postId}")

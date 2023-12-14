@@ -2,6 +2,7 @@ package Geek.Blog.repository;
 
 import Geek.Blog.dto.PostDTO;
 import Geek.Blog.entity.Category;
+import Geek.Blog.entity.Member;
 import Geek.Blog.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -53,6 +54,16 @@ public class PostJPARepository implements PostRepository{
     public List<Post> findCategoryPost(Category category) {
         return em.createQuery("SELECT p FROM Post p WHERE p.category = :category", Post.class)
                 .setParameter("category", category).getResultList();
+    }
+
+    @Override
+    public List<Post> findMemberPost(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found with ID: " + memberId));
+
+        Query query = em.createQuery("SELECT p FROM Post p WHERE p.author = :author", Post.class);
+        query.setParameter("author", member);
+
+        return (List<Post>) query.getResultList();
     }
 
     @Override
